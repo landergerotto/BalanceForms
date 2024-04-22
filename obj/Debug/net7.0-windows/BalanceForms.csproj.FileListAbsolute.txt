@@ -1,0 +1,5 @@
+C:\Users\disrct\Desktop\BalanceForms\obj\Debug\net7.0-windows\BalanceForms.csproj.AssemblyReference.cache
+C:\Users\disrct\Desktop\BalanceForms\obj\Debug\net7.0-windows\BalanceForms.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\disrct\Desktop\BalanceForms\obj\Debug\net7.0-windows\BalanceForms.AssemblyInfoInputs.cache
+C:\Users\disrct\Desktop\BalanceForms\obj\Debug\net7.0-windows\BalanceForms.AssemblyInfo.cs
+C:\Users\disrct\Desktop\BalanceForms\obj\Debug\net7.0-windows\BalanceForms.csproj.CoreCompileInputs.cache
