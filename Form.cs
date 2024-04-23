@@ -38,22 +38,21 @@ public partial class MainForm : Form
 
     private void Form_Load(object sender, EventArgs e)
     {
+        GameEngine.New();
         this.bitmap = new Bitmap(pb.Width, pb.Height);
 
         this.g = Graphics.FromImage(this.bitmap);
         this.g.InterpolationMode = InterpolationMode.NearestNeighbor;
         this.g.Clear(Color.White);
         this.pb.Image = bitmap;
+        GameEngine.Current.StartUp();
         this.timer.Start();
     }
 
     private void Timer_Tick(object sender, EventArgs e)
     {
         g.Clear(Color.White);
-        // Captura o conteúdo do pb como um bitmap
-        Rectangle rect = new Rectangle(0, 0, pb.Width, pb.Height);
-        pb.DrawToBitmap(bitmap, rect);
-
+        GameEngine.Current.Draw(g);
         pb.Refresh();
     }
 
