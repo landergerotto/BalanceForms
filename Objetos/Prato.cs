@@ -6,8 +6,14 @@ public class Prato
     public RectangleF Hitbox { get; set; }
     public List<Objeto> Objetos { get; set; } = new List<Objeto>();
     public Balanca Balanca { get; set; }
-    public virtual void Draw(Graphics g)
+
+    public void Update() 
+    { 
+        
+    }
+
+    public void Draw(Graphics g)
     {
-        g.DrawRectangle(Pens.AliceBlue, Hitbox);
+        g.DrawRectangle(Pens.Blue, Hitbox);
     }
 }

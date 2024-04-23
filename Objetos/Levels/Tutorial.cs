@@ -15,16 +15,23 @@ public class Tutorial : IGame
     public Tutorial()
     {
         var t = new Triangulo();
+
+        var b1 = new Balanca(0, 450);
+        var b2 = new Balanca(0, 800);
+
+        balancas[0] = b1; balancas[1] = b2;
+
         Mesa.Add(t);
         objetosJogo.Add(t);
-        
-
 
         ObjectManager.SetList(ObjetosJogo);
     }
 
     public void Draw(Graphics g)
     {
+        foreach (var balanca in balancas)
+            balanca.Draw(g);
+
         foreach (var obj in ObjectManager.Objetos)
             obj.Draw(g);
     }
