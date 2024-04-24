@@ -21,6 +21,7 @@ public class GameEngine
 
     public void Update( ) 
     { 
+
         JogoAtual.Update( );
     }
     public void Draw (Graphics g)

@@ -16,7 +16,7 @@ public abstract class Objeto
 
     public virtual void Draw(Graphics g)
     {
-        g.DrawImage(image, Position, new SizeF(100, 100));
+        g.DrawImageOnScreen(image, Position, new SizeF(100, 100));
     }
 
     public virtual void Move(PointF position)

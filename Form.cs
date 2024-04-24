@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 public partial class MainForm : Form
@@ -23,6 +24,13 @@ public partial class MainForm : Form
 
         bitmap = new Bitmap(pb.Width, pb.Height);
         pb.Image = bitmap;
+
+        this.KeyPreview = true;
+        this.KeyDown += KeyboardDown;
+
+        this.pb.MouseDown += CursorDown;
+        this.pb.MouseUp += CursorUp;
+        this.pb.MouseMove += CursorMove;
 
         timer = new Timer { Interval = 16 };
 
@@ -101,6 +109,7 @@ public partial class MainForm : Form
     private void Timer_Tick(object sender, EventArgs e)
     {
         g.Clear(Color.White);
+        GameEngine.Current.Update();
         GameEngine.Current.Draw(g);
         pb.Refresh();
     }
@@ -145,5 +154,22 @@ public partial class MainForm : Form
         {
             e.Handled = true; // Handle the event by setting Handled to true, thereby rejecting the character
         }
+    }
+
+    private void CursorMove(object sender, MouseEventArgs e)
+    {
+        ClientCursor.Position = ClientScreen.PositionOnScreen(e.Location);
+    }
+
+    private void CursorDown(object sender, MouseEventArgs e)
+    {
+        if (e.Button == MouseButtons.Left)
+            ClientCursor.Clicar();
+    }
+
+    private void CursorUp(object sender, MouseEventArgs e)
+    {
+        if (e.Button == MouseButtons.Left)
+            ClientCursor.Soltar();
     }
 }

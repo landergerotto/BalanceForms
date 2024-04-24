@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Windows.Forms;
 
 public class Balanca
 {
@@ -43,14 +44,11 @@ public class Balanca
             Equilibrio = Equilibrio.Equilibrado;
 
         this.Image = Bitmap.FromFile($"assets/Balanca/balanca{(int)Equilibrio}.png");
-        foreach (var prato in Pratos)
-            prato.Update();
     }
 
     public void Draw(Graphics g)
     {
-        Update();
-        g.DrawImage(Image, Position, Tamanho);
+        g.DrawImageOnScreen(Image, Position, Tamanho);
         Esquerdo.Draw(g);
         Direito.Draw(g);
     }
