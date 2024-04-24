@@ -1,0 +1,9 @@
+{
+    nome: "",
+    nascimento: "",
+    prova1: { todas as formas },
+    prova2: { todas as formas },
+    tempo: 00,
+    qntdutilizada: 00,
+    percacertos: 00
+}

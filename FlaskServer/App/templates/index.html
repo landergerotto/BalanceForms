@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/timer" method="post">
+        <div class="define_time">
+            Minutos
+            <input type="text" name="minutes" placeholder="Tempo padrão: 30 minutos">
+        </div>
+        <button type="submit">Iniciar prova</button>
+    </form>
+</body>
+</html>
+
