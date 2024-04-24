@@ -8,5 +8,6 @@ public class Triangulo : Objeto
         this.Valor = valor;
         this.image = Bitmap.FromFile("assets/trianglo.png");
         this.Position = new Point(500, 500);
+        this.Size = new SizeF(100, 100);
     }
 }
