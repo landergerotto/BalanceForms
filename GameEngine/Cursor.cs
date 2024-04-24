@@ -27,17 +27,16 @@ public static class ClientCursor
 
     public static void Soltar()
     {
+        if (Objeto is null)
+            return;
         foreach (var balanca in GameEngine.Current.JogoAtual.Balancas)
             foreach (var prato in balanca.Pratos)
             {
                 if (prato.Hitbox.Contains(Position))
                 {
-                    prato.Pen = Pens.Red;
                     GameEngine.Current.JogoAtual.Mesa.Remove(Objeto);
                     prato.Objetos.Add(Objeto);
                 }
-                else
-                    prato.Pen = Pens.Blue;
             }
         Objeto = null;
     }
