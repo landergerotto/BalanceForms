@@ -17,7 +17,7 @@ public class Tutorial : IGame
         var t = new Triangulo();
 
         var b1 = new Balanca(0, 450);
-        var b2 = new Balanca(0, 800);
+        var b2 = new Balanca(800, 450);
 
         balancas[0] = b1; balancas[1] = b2;
 
@@ -25,6 +25,18 @@ public class Tutorial : IGame
         objetosJogo.Add(t);
 
         ObjectManager.SetList(ObjetosJogo);
+    }
+    public void Update()
+    {
+        foreach (var balanca in balancas)
+        {
+            balanca.Update();
+        }
+
+        foreach (var forma in ObjetosJogo)
+        {
+            forma.Update();
+        }
     }
 
     public void Draw(Graphics g)
@@ -40,4 +52,5 @@ public class Tutorial : IGame
     {
         throw new System.NotImplementedException();
     }
+
 }

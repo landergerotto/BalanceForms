@@ -19,7 +19,10 @@ public class GameEngine
         JogoAtual = Games[0];
     }
 
-    public void Update( ) { }
+    public void Update( ) 
+    { 
+        JogoAtual.Update( );
+    }
     public void Draw (Graphics g)
         => JogoAtual.Draw(g);
 
