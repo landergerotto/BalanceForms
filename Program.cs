@@ -5,4 +5,4 @@ using System.Windows.Forms;
 
 
 ApplicationConfiguration.Initialize();
-Application.Run(new MainForm());
+Application.Run(new TelaInicialForm());
