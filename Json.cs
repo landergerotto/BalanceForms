@@ -8,7 +8,7 @@ public static class Json
         try
         {
             var a = JsonSerializer.Deserialize<ApiResponse>(json);
-            MessageBox.Show(a.Response.ToString());
+            // MessageBox.Show(a.Response.ToString());
             return JsonSerializer.Deserialize<object>(json);
         }
         catch (JsonException e)

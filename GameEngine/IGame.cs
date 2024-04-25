@@ -4,6 +4,7 @@ using System.Drawing;
 public interface IGame
 {
     List<Objeto> ObjetosJogo { get; }
+    List<int> QuantidadeObjeto { get; }
     Balanca[] Balancas { get; }
     List<Objeto> Mesa { get; }
     void Update();

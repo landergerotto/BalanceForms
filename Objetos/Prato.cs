@@ -56,6 +56,7 @@ public class Prato
                 SolidBrush brush = new SolidBrush(Color.Black);
 
                 g.DrawString(text, font, brush, new PointF(textRect.X, textRect.Y));
+                g.DrawString(type.Value.Count.ToString(), font, brush, center.X - font.Size / 2, center.Y - font.Size / 2);
                 column++;
                 if (!(column < max_column))
                 {

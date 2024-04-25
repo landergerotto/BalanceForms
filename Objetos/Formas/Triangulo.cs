@@ -12,7 +12,9 @@ public class Triangulo : Objeto
                 _image = new Bitmap(width, height);
                 using (Graphics g = Graphics.FromImage(_image))
                 {
+
                     Brush brush = Brushes.Orange;
+
 
                     Point[] points = {
                         new Point(width / 2, 0),
@@ -43,5 +45,5 @@ public class Triangulo : Objeto
         );
 
     public override Triangulo Clone()
-        => new Triangulo(this.Valor);
+        => new Triangulo(this.Position, this.Valor);
 }
