@@ -32,7 +32,7 @@ public partial class MainForm : Form
         this.pb.MouseUp += CursorUp;
         this.pb.MouseMove += CursorMove;
 
-        timer = new Timer { Interval = 16 };
+        timer = new Timer { Interval = 1000 };
 
         Load += Form_Load;
         timer.Tick += Timer_Tick;
@@ -138,6 +138,8 @@ public partial class MainForm : Form
             
         }
         MessageBox.Show(info, "Informações dos Inputs");
+
+        GameEngine.Current.JogoAtual.Enviar();
         // string a = "";
         // foreach (var item in info.Split('\n'))
         // {
