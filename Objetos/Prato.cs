@@ -15,8 +15,48 @@ public class Prato
     public void Draw(Graphics g)
     {
         if (Balanca is not null)
-            g.DrawRectangleOnScreen(this.Pen,
-                RealHitbox((this.Equals(Balanca.Esquerdo) ? 1 : -1) * ((int)Balanca.Equilibrio - 2)));
+        {
+            Dictionary<Type, List<Objeto>> types = new();
+        
+            foreach (var obj in Objetos)
+            {
+                Type objType = obj.GetType();
+                if (!types.ContainsKey(objType))
+                    types[objType] = new List<Objeto>();
+                types[objType].Add(obj);
+            }
+
+            RectangleF area = RealHitbox((this.Equals(Balanca.Esquerdo) ? 1 : -1) * ((int)Balanca.Equilibrio - 2));
+            SizeF size = new SizeF(50, 50);
+            float x = area.X;
+            float y = area.Y + area.Height - size.Height;
+
+            int max_column = (int)(Hitbox.Width / size.Width);
+            float error = Hitbox.Width % size.Width;
+            int column = 0;
+            int line = 0;
+            foreach (var type in types)
+            {
+                PointF position = new PointF(x + (size.Width * column) + error / 2, y - (size.Height * line));
+                var obj = type.Value[0].Clone();
+                obj.Size = size;
+                obj.Move(position);
+                obj.Draw(g);
+
+                Font font = new Font("Arial", 12);
+                SolidBrush brush = new SolidBrush(Color.Black);
+                PointF center = obj.Center;
+                g.DrawString(type.Value.Count().ToString(), font, brush, center.X - font.Size / 2, center.Y - font.Size / 2);
+                column++;
+                if (!(column < max_column))
+                {
+                    column = 0;
+                    line++;
+                }
+            }
+            // g.DrawRectangleOnScreen(this.Pen,
+            //     RealHitbox((this.Equals(Balanca.Esquerdo) ? 1 : -1) * ((int)Balanca.Equilibrio - 2)));
+        }
     }
 
     private RectangleF RealHitbox(int equilibrio)

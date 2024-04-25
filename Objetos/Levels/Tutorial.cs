@@ -14,15 +14,20 @@ public class Tutorial : IGame
 
     public Tutorial()
     {
-        var t = new Triangulo();
-
         var b1 = new Balanca(0, 450);
         var b2 = new Balanca(800, 450);
 
         balancas[0] = b1; balancas[1] = b2;
 
-        Mesa.Add(t);
-        objetosJogo.Add(t);
+        // Mesa.Add(new Triangulo());
+        // Mesa.Add(new Quadrado());
+        // Mesa.Add(new Hexagono());
+        Mesa.Add(new Estrela());
+        // Mesa.Add(new Circulo());
+        // Mesa.Add(new Triangulo());
+
+        foreach (var obj in Mesa)
+            objetosJogo.Add(obj);
 
         ObjectManager.SetList(ObjetosJogo);
     }
@@ -31,11 +36,6 @@ public class Tutorial : IGame
         foreach (var balanca in balancas)
         {
             balanca.Update();
-        }
-
-        foreach (var forma in ObjetosJogo)
-        {
-            forma.Update();
         }
     }
 

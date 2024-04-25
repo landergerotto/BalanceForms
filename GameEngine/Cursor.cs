@@ -11,7 +11,7 @@ public static class ClientCursor
         get => position; 
         set {
             if (Objeto is not null)
-                Objeto.Position = new PointF(value.X - Objeto.Width / 2, value.Y - Objeto.Height / 2);
+                Objeto.Move(new PointF(value.X - Objeto.Width / 2, value.Y - Objeto.Height / 2));
             position = value;
         }
     }
@@ -35,6 +35,7 @@ public static class ClientCursor
                 if (prato.Hitbox.Contains(Position))
                 {
                     GameEngine.Current.JogoAtual.Mesa.Remove(Objeto);
+                    ObjectManager.RemoveGameObject(Objeto);
                     prato.Objetos.Add(Objeto);
                 }
             }
