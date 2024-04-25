@@ -14,7 +14,7 @@ public class Hexagono : Objeto
                 _image = new Bitmap(width, height);
                 using (Graphics g = Graphics.FromImage(_image))
                 {
-                    Brush brush = Brushes.Red;
+                    Brush brush = Brushes.Green;
 
                     Point[] points = {
                         new Point(width / 4, 0),
