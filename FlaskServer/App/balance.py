@@ -104,7 +104,7 @@ def index():
 def timer():
     global test_started
     minutes = request.form['minutes']
-    if minutes == '' or not minutes.isnumeric():
+    if minutes == '':
         minutes = '30'
     test_started = True
     return render_template(
