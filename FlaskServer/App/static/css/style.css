@@ -52,7 +52,6 @@ input {
     padding: 10px;
     border-radius: 10px;
     border: 0;
-    margin-bottom: 20px;
     font-size: 20px;
 }
 
@@ -67,6 +66,7 @@ button {
     border: 1px solid rgb(180, 180, 180);
     border-radius: 20px;
     font-size: 25px;
+    margin-top: 20px;
 }
 
 button:hover {
@@ -81,6 +81,7 @@ button:hover {
     border: 1px solid red;
     border-radius: 10px;
     padding: 10px;
+    font-size: 20px;
 }
 
 .nav-colors {
@@ -124,6 +125,10 @@ button:hover {
     }
     
     input {
+        font-size: 15px;
+    }
+
+    .error {
         font-size: 15px;
     }
 

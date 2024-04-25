@@ -111,6 +111,8 @@ def index():
 def timer():
     if request.method == 'GET':
         return redirect('/')
+    if workbook == None:
+        return redirect('/')
     global test_started
     minutes = request.form['minutes']
     if minutes == '':

@@ -21,7 +21,7 @@
             {% else %}
                 <h1 id="timer" name="timer" class="timer">{{ minutes }}:00</h1>
             {% endif %}
-            <button type="submit">Finalizar prova</button>
+            <button type="submit" id="button">Finalizar prova</button>
             <script src="{{ url_for('static', filename='js/timer.js')}}"></script>
         </form>
     </main>
