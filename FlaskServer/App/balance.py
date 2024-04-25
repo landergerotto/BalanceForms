@@ -76,10 +76,15 @@ def createWorkbook():
         first_line = ['Nome', 'Data de nascimento', 'Triângulo', 'Quadrado', 'Círculo', 'Estrela', 'Hexágono', 'Tempo de prova', 'Quantidade de peças utilizadas', '% de acertos']
         for i in range(len(first_line)):
             if i > 1 and i < 7:
+                worksheet.set_column(i, i, len(first_line[i]))
                 worksheet.write(0, i, first_line[i], head_format)
                 worksheet.write(1, i, correct_answers[index][crr], head_format)
                 crr += 1
                 continue
+            if first_line[i] != 'Nome':
+                worksheet.set_column(i, i, len(first_line[i]))
+            else:
+                worksheet.set_column(i, i, 30)
             worksheet.merge_range(0, i, 1, i, first_line[i], head_format)
         crr = 0
 
