@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template, request
+from flask import Flask, Blueprint, render_template, request, redirect
 import xlsxwriter as xl
 import time
 
@@ -92,6 +92,8 @@ def index():
         return render_template(
             'index.html',
         )
+    if workbook == None:
+        return redirect('/')
     test_started = 2
     time.sleep(1)
     test_started = 0
@@ -100,8 +102,10 @@ def index():
             'final.html',
         )
     
-@bp.route('/timer', methods=['POST'])
+@bp.route('/timer', methods=['GET', 'POST'])
 def timer():
+    if request.method == 'GET':
+        return redirect('/')
     global test_started
     minutes = request.form['minutes']
     if minutes == '':
