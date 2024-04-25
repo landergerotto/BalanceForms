@@ -118,9 +118,9 @@ def timer():
     if minutes == '':
         minutes = '30'
     if int(minutes) > 59:
-        hours = int(int(minutes) / 60)
-        minutes = int(int(minutes) % 60)
-        minutes = f"{hours if hours >= 10 else '0' + str(hours) }:{minutes if minutes >= 10 else '0' + str(minutes)}"
+        hours = int(minutes) // 60
+        minutes = int(minutes) % 60
+        minutes = f"{hours:02d}:{minutes:02d}"
     test_started = 1
     return render_template(
         'timer.html',
@@ -138,9 +138,10 @@ def test_status():
         answers = [list(user_data['prova1'].values()), list(user_data['prova2'].values())]
 
         time = user_data['tempo']
-        minutes = int(int(time) / 60)
-        seconds = int(int(time) % 60)
-        time = f"{ minutes if minutes > 10 else '0' + str(minutes) }:{ seconds if seconds > 10 else '0' + str(seconds) }"
+        hours = int(time) // 3600
+        minutes = (int(time) % 3600) // 60
+        seconds = int(time) % 60
+        time = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
         for index, worksheet in enumerate(worksheets):
             worksheet.write(answer_row, 0, user_data['nome'], user_format)
