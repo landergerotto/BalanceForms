@@ -7,10 +7,19 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/" method="post" id="form">
-        <p id="timer" name="timer">{{ minutes }}:00</p>
-        <button type="submit">Finalizar prova</button>
-        <script src="{{ url_for('static', filename='js/timer.js')}}"></script>
-    </form>
+    <header>
+        <img src="{{ url_for('static',filename='img/nav-colors.png') }}" class="nav-colors"/>
+        <nav>
+            <img src="{{ url_for('static',filename='img/logo-bosch.png') }}" class="logo"/>
+        </nav>
+    </header>
+    <main>
+        <form action="/" method="post" id="form">
+            <h1>Tempo de prova</h1>
+            <h1 id="timer" name="timer" class="timer">{{ minutes }}:00</h1>
+            <button type="submit">Finalizar prova</button>
+            <script src="{{ url_for('static', filename='js/timer.js')}}"></script>
+        </form>
+    </main>
 </body>
 </html>

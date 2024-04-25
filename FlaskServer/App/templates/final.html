@@ -7,9 +7,17 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Prova finalizada!</h1>
-    <form action="/" method="get">
-        <button type="submit">Página inicial</button>
-    </form>
+    <header>
+        <img src="{{ url_for('static',filename='img/nav-colors.png') }}" class="nav-colors"/>
+        <nav>
+            <img src="{{ url_for('static',filename='img/logo-bosch.png') }}" class="logo"/>
+        </nav>
+    </header>
+    <main>
+        <form action="/" method="get">
+            <h1>Prova finalizada!</h1>
+            <button type="submit">Página inicial</button>
+        </form>
+    </main>
 </body>
 </html>

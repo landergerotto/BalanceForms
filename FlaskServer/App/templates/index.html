@@ -7,13 +7,22 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/timer" method="post">
-        <div class="define_time">
-            Minutos
-            <input type="text" name="minutes" placeholder="Tempo padrão: 30 minutos">
-        </div>
-        <button type="submit">Iniciar prova</button>
-    </form>
+    <header>
+        <img src="{{ url_for('static',filename='img/nav-colors.png') }}" class="nav-colors"/>
+        <nav>
+            <img src="{{ url_for('static',filename='img/logo-bosch.png') }}" class="logo"/>
+        </nav>
+    </header>
+    <main>
+        <form action="/timer" method="post">
+            <h1>Defina o tempo de prova</h1>
+            <div class="define_time">
+                <label for="minutes">Minutos</label>
+                <input type="text" name="minutes" placeholder="Tempo padrão: 30 minutos">
+            </div>
+            <button type="submit">Iniciar prova</button>
+        </form>
+    </main>
 </body>
 </html>
 
