@@ -19,12 +19,12 @@ public class Tutorial : IGame
 
         balancas[0] = b1; balancas[1] = b2;
 
-        // Mesa.Add(new Triangulo());
-        // Mesa.Add(new Quadrado());
-        // Mesa.Add(new Hexagono());
+        Mesa.Add(new Triangulo());
+        Mesa.Add(new Quadrado());
+        Mesa.Add(new Hexagono());
         Mesa.Add(new Estrela());
-        // Mesa.Add(new Circulo());
-        // Mesa.Add(new Triangulo());
+        Mesa.Add(new Circulo());
+        Mesa.Add(new Triangulo());
 
         foreach (var obj in Mesa)
             objetosJogo.Add(obj);
