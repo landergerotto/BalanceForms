@@ -4,22 +4,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function Timer() {
         let time = timerElement.innerHTML;
-        let minutes = parseInt(time.split(':')[0]);
-        let seconds = parseInt(time.split(':')[1]);
+        let hours = parseInt(time.split(':')[0]);
+        let minutes = parseInt(time.split(':')[1]);
+        let seconds = parseInt(time.split(':')[2]);
+
+        if (hours == 0 && minutes == 0 && seconds == 0) {
+            form.submit();
+            return;
+        }
 
         if (seconds == 0) {
-            minutes -= 1;
+            if (minutes == 0) {
+                hours -= 1;
+                minutes = 59;
+            } else {
+                minutes -= 1;
+            }
             seconds = 59;
         } else {
             seconds -= 1;
         }
 
-        if (minutes == 0 && seconds == 0) {
-            form.submit();
-            return;
-        }
-
-        timerElement.innerHTML = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+        timerElement.innerHTML = `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
     }
 
     setInterval(Timer, 1000);

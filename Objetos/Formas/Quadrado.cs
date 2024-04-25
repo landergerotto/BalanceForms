@@ -12,7 +12,7 @@ public class Quadrado : Objeto
                 _image = new Bitmap(width, height);
                 using (Graphics g = Graphics.FromImage(_image))
                 {
-                    Brush brush = Brushes.Red;
+                    Brush brush = Brushes.CadetBlue;
 
                     Point[] points = {
                         new Point(0, 0),

@@ -15,7 +15,7 @@ public class Estrela : Objeto
                 _image = new Bitmap(width, height);
                 using (Graphics g = Graphics.FromImage(_image))
                 {
-                    Brush brush = Brushes.Red;
+                    Brush brush = Brushes.Magenta;
 
                     Point[] points = {
                         new Point(width / 5 * 1, height),
