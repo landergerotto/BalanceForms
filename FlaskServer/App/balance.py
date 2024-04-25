@@ -9,45 +9,70 @@ test_started = None
 answer_row = 2
 crr = 0
 
-workbook = xl.Workbook('Resultados.xlsx')
-worksheet1 = workbook.add_worksheet('Prova1')
-worksheet2 = workbook.add_worksheet('Prova2')
+workbook = None
+worksheet1 = None
+worksheet2 = None
+user_format = None
+percentage_format = None
+answers_format_correct = None
+answers_format_wrong = None
+worksheets = None
+correct_answers = None
+crr = 0
 
-head_format = workbook.add_format({
-    'bold': 1,
-    'border': 1,
-    'bg_color': '#123499',
-    'font_color': 'white',
-    'align': 'center',
-    'valign': 'vcenter'
-})
-user_format = workbook.add_format({
-    'align': 'center',
-    'valign': 'vcenter',
-    'bottom_color': 'black'
-})
-percentage_format = workbook.add_format({
-    'align': 'center',
-    'valign': 'vcenter',
-    'bottom_color': 'black',
-    'num_format': '0%'
-})
-answers_format_correct = workbook.add_format({
-    'align': 'center',
-    'valign': 'vcenter',
-    'bottom_color': 'black',
-    'bg_color': '#39e75f',
-})
-answers_format_wrong = workbook.add_format({
-    'align': 'center',
-    'valign': 'vcenter',
-    'bottom_color': 'black',
-    'bg_color': '#ff7f7f',
-})
+def createWorkbook():
+    global answer_row
+    global workbook
+    global worksheet1
+    global worksheet2
+    global user_format
+    global percentage_format
+    global answers_format_correct
+    global answers_format_wrong
+    global worksheets
+    global correct_answers
+    global crr
+    
+    answer_row = 2
+    workbook = xl.Workbook('Resultados.xlsx')
+    worksheet1 = workbook.add_worksheet('Prova1')
+    worksheet2 = workbook.add_worksheet('Prova2')
 
-worksheets = [worksheet1, worksheet2]
-correct_answers = [[500, 1000, 750, 200, 100], [500, 1000, 750, 200, 100]]
-for index, worksheet in enumerate(worksheets):
+    head_format = workbook.add_format({
+        'bold': 1,
+        'border': 1,
+        'bg_color': '#123499',
+        'font_color': 'white',
+        'align': 'center',
+        'valign': 'vcenter'
+    })
+    user_format = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'bottom_color': 'black'
+    })
+    percentage_format = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'bottom_color': 'black',
+        'num_format': '0%'
+    })
+    answers_format_correct = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'bottom_color': 'black',
+        'bg_color': '#39e75f',
+    })
+    answers_format_wrong = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'bottom_color': 'black',
+        'bg_color': '#ff7f7f',
+    })
+
+    worksheets = [worksheet1, worksheet2]
+    correct_answers = [[500, 1000, 750, 200, 100], [500, 1000, 750, 200, 100]]
+    for index, worksheet in enumerate(worksheets):
         first_line = ['Nome', 'Data de nascimento', 'Triângulo', 'Quadrado', 'Círculo', 'Estrela', 'Hexágono', 'Tempo de prova', 'Quantidade de peças utilizadas', '% de acertos']
         for i in range(len(first_line)):
             if i > 1 and i < 7:
@@ -63,6 +88,7 @@ def index():
     global test_started
     if request.method == 'GET':
         test_started = None
+        createWorkbook()
         return render_template(
             'index.html',
         )
