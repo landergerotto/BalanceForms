@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 public class Tutorial : IGame
 {
@@ -11,6 +12,8 @@ public class Tutorial : IGame
 
     private List<Objeto> mesa = new List<Objeto>();
     public List<Objeto> Mesa => mesa;
+
+    private HttpRequester requester = new("http://127.0.0.1:5000/");
 
     public Tutorial()
     {
@@ -31,8 +34,11 @@ public class Tutorial : IGame
 
         ObjectManager.SetList(ObjetosJogo);
     }
-    public void Update()
+    public async void Update()
     {
+        string a = await requester.GetAsync("test");
+        var b = Json.DeserializeResponse(a);
+        MessageBox.Show(b.ToString());
         foreach (var balanca in balancas)
         {
             balanca.Update();
