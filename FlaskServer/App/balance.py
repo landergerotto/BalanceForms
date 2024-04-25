@@ -106,6 +106,10 @@ def timer():
     minutes = request.form['minutes']
     if minutes == '':
         minutes = '30'
+    if int(minutes) > 59:
+        hours = int(int(minutes) / 60)
+        minutes = int(int(minutes) % 60)
+        minutes = f"{hours if hours >= 10 else '0' + str(hours) }:{minutes if minutes >= 10 else '0' + str(minutes)}"
     test_started = True
     return render_template(
         'timer.html',
