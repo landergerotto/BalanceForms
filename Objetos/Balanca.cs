@@ -49,8 +49,8 @@ public class Balanca
     public void Draw(Graphics g)
     {
         g.DrawImageOnScreen(Image, Position, Tamanho);
-        // Esquerdo.Draw(g);
-        // Direito.Draw(g);
+        Esquerdo.Draw(g);
+        Direito.Draw(g);
     }
 
 }
