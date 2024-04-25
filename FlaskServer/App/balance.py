@@ -1,11 +1,11 @@
-from flask import Flask, Blueprint, render_template, request, jsonify
+from flask import Flask, Blueprint, render_template, request, redirect
 import xlsxwriter as xl
 import time
 
 app = Flask(__name__)
 bp = Blueprint('balance', __name__, url_prefix='/', static_folder='static')
 
-test_started = None
+test_started = 0
 answer_row = 2
 crr = 0
 
@@ -49,25 +49,25 @@ def createWorkbook():
     user_format = workbook.add_format({
         'align': 'center',
         'valign': 'vcenter',
-        'bottom_color': 'black'
+        'border': 1
     })
     percentage_format = workbook.add_format({
         'align': 'center',
         'valign': 'vcenter',
-        'bottom_color': 'black',
-        'num_format': '0%'
+        'num_format': '0%',
+        'border': 1
     })
     answers_format_correct = workbook.add_format({
         'align': 'center',
         'valign': 'vcenter',
-        'bottom_color': 'black',
         'bg_color': '#39e75f',
+        'border': 1
     })
     answers_format_wrong = workbook.add_format({
         'align': 'center',
         'valign': 'vcenter',
-        'bottom_color': 'black',
         'bg_color': '#ff7f7f',
+        'border': 1
     })
 
     worksheets = [worksheet1, worksheet2]
@@ -76,10 +76,15 @@ def createWorkbook():
         first_line = ['Nome', 'Data de nascimento', 'Triângulo', 'Quadrado', 'Círculo', 'Estrela', 'Hexágono', 'Tempo de prova', 'Quantidade de peças utilizadas', '% de acertos']
         for i in range(len(first_line)):
             if i > 1 and i < 7:
+                worksheet.set_column(i, i, len(first_line[i]))
                 worksheet.write(0, i, first_line[i], head_format)
                 worksheet.write(1, i, correct_answers[index][crr], head_format)
                 crr += 1
                 continue
+            if first_line[i] != 'Nome':
+                worksheet.set_column(i, i, len(first_line[i]))
+            else:
+                worksheet.set_column(i, i, 30)
             worksheet.merge_range(0, i, 1, i, first_line[i], head_format)
         crr = 0
 
@@ -87,26 +92,34 @@ def createWorkbook():
 def index():
     global test_started
     if request.method == 'GET':
-        test_started = None
+        test_started = 0
         createWorkbook()
         return render_template(
             'index.html',
         )
-    test_started = False
+    if workbook == None:
+        return redirect('/')
+    test_started = 2
     time.sleep(1)
+    test_started = 0
     workbook.close()
-    test_started = None
     return render_template(
             'final.html',
         )
     
-@bp.route('/timer', methods=['POST'])
+@bp.route('/timer', methods=['GET', 'POST'])
 def timer():
+    if request.method == 'GET':
+        return redirect('/')
     global test_started
     minutes = request.form['minutes']
     if minutes == '':
         minutes = '30'
-    test_started = True
+    if int(minutes) > 59:
+        hours = int(int(minutes) / 60)
+        minutes = int(int(minutes) % 60)
+        minutes = f"{hours if hours >= 10 else '0' + str(hours) }:{minutes if minutes >= 10 else '0' + str(minutes)}"
+    test_started = 1
     return render_template(
         'timer.html',
         minutes = minutes
@@ -116,7 +129,7 @@ def timer():
 def test_status():
     if request.method == 'GET':
         return {'response': test_started}, 200
-    if test_started != None:
+    if test_started != 0:
         user_data = request.json
         global crr, answer_row, correct_answers
 

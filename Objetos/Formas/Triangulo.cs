@@ -12,7 +12,9 @@ public class Triangulo : Objeto
                 _image = new Bitmap(width, height);
                 using (Graphics g = Graphics.FromImage(_image))
                 {
-                    Brush brush = Brushes.Blue;
+
+                    Brush brush = Brushes.Orange;
+
 
                     Point[] points = {
                         new Point(width / 2, 0),

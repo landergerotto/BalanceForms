@@ -32,7 +32,7 @@ public partial class MainForm : Form
         this.pb.MouseUp += CursorUp;
         this.pb.MouseMove += CursorMove;
 
-        timer = new Timer { Interval = 16 };
+        timer = new Timer { Interval = 1000 };
 
         Load += Form_Load;
         timer.Tick += Timer_Tick;
@@ -45,46 +45,49 @@ public partial class MainForm : Form
         Text = "Teixto";
 
         // Adiciona o painel para os inputs acima da PictureBox
+        float width = 250;
+        float height = 180;
+        RectangleF inputPanelRect = ClientScreen.OnScreen(ClientScreen.Width - width, ClientScreen.Height / 2 - height / 2, width, height);
         inputPanel = new Panel
         {
             BackColor = Color.LightGray,
-            Size = new Size(200, 180),
-            Location = new Point(ClientSize.Width - 220, (ClientSize.Height - 120) / 2)
+            Size = new Size((int)inputPanelRect.Width, (int)inputPanelRect.Height),
+            Location = new Point((int)inputPanelRect.X, (int)inputPanelRect.Y)
         };
 
-        // Centraliza o painel na parte direita da tela
-        inputPanel.Location = new Point(
-            Screen.PrimaryScreen.Bounds.Width - inputPanel.Width,
-            (Screen.PrimaryScreen.Bounds.Height - inputPanel.Height) / 2
-        );
-
-        // Adiciona os inputs e labels ao painel
         // Adiciona os inputs e labels ao painel
         string[] shapes = new string[] { "⬜", "🟠", "★", "⬣" }; // Square, Circle, Star, Hexagon in Unicode
-        for (int i = 0; i < 4; i++)
+        float fontsize = 10 * Screen.PrimaryScreen.Bounds.Height / ClientScreen.Height;
+        Font font = new Font("Arial", fontsize, FontStyle.Regular);
+        SizeF maxLabelSize = Utils.MeasureText(shapes, font);
+        for (int i = 0; i < shapes.Length; i++)
         {
             Label label = new Label
             {
-                Text = shapes[i] + " " + ":",
+                Text = shapes[i] + ":",
                 AutoSize = true,
-                Location = new Point(10, 20 + i * 25)
+                Location = new Point(10, (int)(fontsize * 2 + (int)(fontsize * 2.5) * i)),
+                Font = font
             };
             inputPanel.Controls.Add(label);
 
             TextBox textBox = new TextBox
             {
-                Size = new Size(130, 20),
-                Location = new Point(label.Right + 5, label.Top - 3)
+                Font = font,
+                Size = new Size((int)((inputPanel.Width - maxLabelSize.Width - fontsize) * 0.8), 0),
+                Location = new Point((int)(label.Location.X + maxLabelSize.Width + fontsize), label.Top)
             };
             textBox.KeyPress += TextBox_KeyPress;
             inputPanel.Controls.Add(textBox);
         }
 
+        Size buttonSize = new Size((int)(inputPanel.Width * .75), (int)(inputPanel.Height * .17));
         Button getInfoButton = new Button
         {
             Text = "Get Info",
-            Size = new Size(180, 30),
-            Location = new Point(10, 20 + 30 * 4)
+            Font = font,
+            Size = buttonSize,
+            Location = new Point(inputPanel.Width / 2 - buttonSize.Width / 2, (int)(inputPanel.Height - buttonSize.Height * 1.5)),
         };
         getInfoButton.Click += GetInfoButton_Click;
         inputPanel.Controls.Add(getInfoButton);
@@ -135,9 +138,11 @@ public partial class MainForm : Form
         {
             if (control is TextBox)
                 info += ((TextBox)control).Text + "\n";
-            
+
         }
         MessageBox.Show(info, "Informações dos Inputs");
+
+        GameEngine.Current.JogoAtual.Enviar();
         // string a = "";
         // foreach (var item in info.Split('\n'))
         // {

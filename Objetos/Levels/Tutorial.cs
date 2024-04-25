@@ -15,6 +15,7 @@ public class Tutorial : IGame
     private List<Objeto> mesa = new List<Objeto>();
     public List<Objeto> Mesa => mesa;
 
+
     public Dictionary<Objeto, int> Formas = new();
 
     public List<int> QuantidadeObjeto => QuantidadeObjeto;
@@ -37,6 +38,9 @@ public class Tutorial : IGame
         }
     }
 
+    private HttpRequester requester = new("http://127.0.0.1:5000/");
+
+
     public Tutorial()
     {
         var b1 = new Balanca(0, 450);
@@ -50,7 +54,6 @@ public class Tutorial : IGame
         Formas[new Estrela(new PointF(300, 0), 500)] = 5;
         Formas[new Hexagono(new PointF(400, 0), 500)] = 5;
 
-
         foreach (var obj in Formas)
         {
             for (int i = 0; i < obj.Value; i++)
@@ -63,8 +66,11 @@ public class Tutorial : IGame
 
         ObjectManager.SetList(ObjetosJogo);
     }
-    public void Update()
+    public async void Update()
     {
+        string a = await requester.GetAsync("test");
+        var b = Json.DeserializeResponse(a);
+        // MessageBox.Show(b.ToString());
         foreach (var balanca in balancas)
         {
             balanca.Update();

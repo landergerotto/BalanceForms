@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 public static class Utils
 {
@@ -46,5 +47,20 @@ public static class Utils
         }
 
         return bitmap;
+    }
+
+    public static SizeF MeasureText(string[] texts, Font font)
+    {
+        int maxWidth = 0;
+        int maxHeight = 0;
+
+        foreach (string text in texts)
+        {
+            Size size = TextRenderer.MeasureText(text, font);
+            maxWidth = Math.Max(maxWidth, size.Width);
+            maxHeight = Math.Max(maxHeight, size.Height);
+        }
+
+        return new SizeF(maxWidth, maxHeight);
     }
 }
