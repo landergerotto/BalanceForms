@@ -43,5 +43,5 @@ public class Hexagono : Objeto
     public Hexagono(int valor = 500) : this(new PointF(0, 0), valor) { }
 
     public override Hexagono Clone()
-        => new Hexagono(this.Valor);
+        => new Hexagono(this.Position, this.Valor);
 }

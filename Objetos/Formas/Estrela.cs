@@ -53,5 +53,5 @@ public class Estrela : Objeto
     public Estrela(int valor = 500) : this(new PointF(0, 0), valor) {}
 
     public override Estrela Clone()
-        => new Estrela(this.Valor);
+        => new Estrela(this.Position, this.Valor);
 }

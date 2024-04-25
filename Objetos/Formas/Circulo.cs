@@ -13,7 +13,7 @@ public class Circulo : Objeto
                 _image = new Bitmap(diameter, diameter);
                 using (Graphics g = Graphics.FromImage(_image))
                 {
-                    Brush brush = Brushes.Red;
+                    Brush brush = Brushes.Green;
 
                     g.FillEllipse(brush, 0, 0, diameter, diameter);
                 }
@@ -33,5 +33,5 @@ public class Circulo : Objeto
     public Circulo(int valor = 500) : this(new PointF(0, 0), valor) {}
 
     public override Circulo Clone()
-        => new Circulo(this.Valor);
+        => new Circulo(this.Position, this.Valor);
 }

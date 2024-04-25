@@ -39,5 +39,5 @@ public class Quadrado : Objeto
     public Quadrado(int valor = 500) : this(new PointF(0, 0), valor) {}
 
     public override Quadrado Clone()
-        => new Quadrado(this.Valor);
+        => new Quadrado(this.Position, this.Valor);
 }

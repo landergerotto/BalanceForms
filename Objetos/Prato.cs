@@ -46,7 +46,7 @@ public class Prato
                 Font font = new Font("Arial", 12);
                 SolidBrush brush = new SolidBrush(Color.Black);
                 PointF center = obj.Center;
-                g.DrawString(type.Value.Count().ToString(), font, brush, center.X - font.Size / 2, center.Y - font.Size / 2);
+                g.DrawString(type.Value.Count.ToString(), font, brush, center.X - font.Size / 2, center.Y - font.Size / 2);
                 column++;
                 if (!(column < max_column))
                 {
