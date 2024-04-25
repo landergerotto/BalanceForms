@@ -3,23 +3,28 @@ using System.Windows.Forms;
 
 public static class Json
 {
-    public static object DeserializeResponse(string json)
+    public static ApiResponse DeserializeResponse(string json)
     {
         try
         {
-            var a = JsonSerializer.Deserialize<ApiResponse>(json);
-            // MessageBox.Show(a.Response.ToString());
-            return JsonSerializer.Deserialize<object>(json);
+            return JsonSerializer.Deserialize<ApiResponse>(json);
         }
         catch (JsonException e)
         {
             // Handle or log the exception as needed
-            return new object {  };
+            return new ApiResponse { response = 0 };
         }
     }
 }
 
 public class ApiResponse
 {
-    public object Response { get; set; } = new object();
+    public Respostas response { get; set; }
+}
+
+public enum Respostas
+{
+    NComecado = 0,
+    Comecado = 1, 
+    Parou = 2
 }

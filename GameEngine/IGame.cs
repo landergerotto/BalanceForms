@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 public interface IGame
 {
@@ -9,5 +10,5 @@ public interface IGame
     List<Objeto> Mesa { get; }
     void Update();
     void Draw(Graphics g);
-    void Enviar();
+    void Enviar(Panel panel);
 }

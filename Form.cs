@@ -32,7 +32,7 @@ public partial class MainForm : Form
         this.pb.MouseUp += CursorUp;
         this.pb.MouseMove += CursorMove;
 
-        timer = new Timer { Interval = 1000 };
+        timer = new Timer { Interval = 16 };
 
         Load += Form_Load;
         timer.Tick += Timer_Tick;
@@ -132,24 +132,7 @@ public partial class MainForm : Form
 
     private void GetInfoButton_Click(object sender, EventArgs e)
     {
-        // Obtém as informações dos inputs
-        string info = "";
-        foreach (Control control in inputPanel.Controls)
-        {
-            if (control is TextBox)
-                info += ((TextBox)control).Text + "\n";
-
-        }
-        MessageBox.Show(info, "Informações dos Inputs");
-
-        GameEngine.Current.JogoAtual.Enviar();
-        // string a = "";
-        // foreach (var item in info.Split('\n'))
-        // {
-        //     a += item + " ";
-        // }
-        // MessageBox.Show(a, "Informações dos Inputs");
-
+        GameEngine.Current.JogoAtual.Enviar(inputPanel);
     }
 
     private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
