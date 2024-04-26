@@ -20,12 +20,12 @@ header {
 }
 
 nav {
-    padding: 10px;
+    padding: 20px;
 }
 
 main {
     background-color: white;
-    width: 50%;
+    width: 60%;
     padding: 20px;
     border-radius: 20px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;

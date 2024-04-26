@@ -16,12 +16,11 @@
     <main>
         <form action="/" method="post" id="form">
             <h1>Tempo de prova</h1>
-            {% if ':' not in minutes %}
-                <h1 id="timer" name="timer" class="timer">00:{{ minutes }}:00</h1>
-            {% else %}
-                <h1 id="timer" name="timer" class="timer">{{ minutes }}:00</h1>
-            {% endif %}
+            <h1 id="timer" name="timer" class="timer"></h1>
             <button type="submit" id="button">Finalizar prova</button>
+            <script type="text/javascript">
+                var minutes = {{ minutes }}
+            </script>
             <script src="{{ url_for('static', filename='js/timer.js')}}"></script>
         </form>
     </main>
