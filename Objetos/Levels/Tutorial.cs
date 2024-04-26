@@ -112,6 +112,7 @@ public class Tutorial : IGame
 
     public void Enviar(Panel panel)
     {
+        MessageBox.Show(apiResponse.ToString(), "Informações dos Inputs");
         if (apiResponse != Respostas.Comecado)
         {
             string info = "";
