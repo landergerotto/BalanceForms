@@ -17,6 +17,7 @@ function Timer() {
     const now = new Date();
     
     if (now >= target) {
+        button.disabled = true;
         sessionStorage.removeItem('time')
         form.submit();
         return;
