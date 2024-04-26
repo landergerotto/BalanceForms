@@ -11,36 +11,38 @@ public class TelaInicialForm : Form
     public TelaInicialForm()
     {
         Text = "Tela Inicial";
-        Size = new Size(300, 150);
+        Size = new Size(500, 250);
         FormBorderStyle = FormBorderStyle.FixedDialog;
         StartPosition = FormStartPosition.CenterScreen;
         BackColor = Color.LightGray;
 
-        Label label1 = new Label { Text = "Input 1:", AutoSize = true };
+        Label label1 = new Label { Text = "Nome Completo:", AutoSize = true };
 
         input1 = new TextBox();
+        input1.Width = 250;
 
-        Label label2 = new Label { Text = "Input 2:", AutoSize = true };
+        Label label2 = new Label { Text = "Data de Nascimento:", AutoSize = true };
 
         input2 = new TextBox();
+        input2.Width = 250;
 
         startButton = new Button
         {
-            Text = "Start",
-            Location = new Point(110, 90),
+            Text = "Iniciar",
+            Location = new Point(200, y: 150),
             Size = new Size(80, 30)
         };
         startButton.Click += StartButton_Click;
 
         // Calcula as posições para centralizar os inputs
         int labelWidth = Math.Max(label1.Width, label2.Width);
-        int inputWidth = 150;
+        int inputWidth = 340;
         int startX = (ClientSize.Width - labelWidth - inputWidth - 20) / 2;
 
-        label1.Location = new Point(startX, 20);
-        input1.Location = new Point(startX + labelWidth + 5, 20);
-        label2.Location = new Point(startX, 50);
-        input2.Location = new Point(startX + labelWidth + 5, 50);
+        label1.Location = new Point(startX, 60);
+        input1.Location = new Point(startX + labelWidth + 20, 60);
+        label2.Location = new Point(startX, 90);
+        input2.Location = new Point(startX + labelWidth + 20, 90);
 
         Controls.Add(label1);
         Controls.Add(input1);

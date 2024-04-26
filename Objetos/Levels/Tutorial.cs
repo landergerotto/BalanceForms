@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 public class Tutorial : IGame
@@ -19,7 +20,7 @@ public class Tutorial : IGame
     public Dictionary<Objeto, int> Formas = new();
 
     public List<int> QuantidadeObjeto => QuantidadeObjeto;
-
+    
     public Dictionary<Type, List<Objeto>> MesaTypes
     {
         get
@@ -39,8 +40,7 @@ public class Tutorial : IGame
     }
 
     private HttpRequester requester = new("http://127.0.0.1:5000/");
-
-
+    private Respostas apiResponse;
     public Tutorial()
     {
         var b1 = new Balanca(0, 450);
@@ -48,11 +48,11 @@ public class Tutorial : IGame
 
         balancas[0] = b1; balancas[1] = b2;
 
-        Formas[new Circulo(new PointF(0, 0), 500)] = 5;
-        Formas[new Quadrado(new PointF(100, 0), 500)] = 5;
+        Formas[new Circulo(new PointF(0, 0), 300)] = 5;
+        Formas[new Quadrado(new PointF(100, 0), 400)] = 5;
         Formas[new Triangulo(new PointF(200, 0), 500)] = 5;
-        Formas[new Estrela(new PointF(300, 0), 500)] = 5;
-        Formas[new Hexagono(new PointF(400, 0), 500)] = 5;
+        Formas[new Estrela(new PointF(300, 0), 600)] = 5;
+        Formas[new Hexagono(new PointF(400, 0), 700)] = 5;
 
         foreach (var obj in Formas)
         {
@@ -60,17 +60,13 @@ public class Tutorial : IGame
             {
                 Objeto objeto = obj.Key.Clone();
                 Mesa.Add(objeto);
-                ObjetosJogo.Add(objeto);
+                objetosJogo.Add(objeto);
             }
         }
-
-        ObjectManager.SetList(ObjetosJogo);
     }
     public async void Update()
     {
-        string a = await requester.GetAsync("test");
-        var b = Json.DeserializeResponse(a);
-        // MessageBox.Show(b.ToString());
+        await TestRequestAsync();
         foreach (var balanca in balancas)
         {
             balanca.Update();
@@ -107,10 +103,41 @@ public class Tutorial : IGame
             g.DrawString((type.Value.Count - ( ClientCursor.Objeto?.GetType() == obj.GetType() ? 1 : 0)).ToString(), font, brush, center.X - font.Size / 2, center.Y - font.Size / 2);
         }
     }
-
-    public void Enviar()
+    private async Task TestRequestAsync()
     {
-        throw new System.NotImplementedException();
+        string a = await requester.GetAsync("test");
+        var b = Json.DeserializeResponse(a);
+        this.apiResponse = b.response;
+    }
+
+    public void Enviar(Panel panel)
+    {
+        if (apiResponse != Respostas.Comecado)
+        {
+            string info = "";
+            int valor = 200;
+            foreach (Control control in panel.Controls)
+            {
+                if (valor == 500)
+                    valor += 100;
+
+                if (control is TextBox)
+                {
+                    var text = ((TextBox)control).Text;
+                    if (text is "")
+                        text = "0";
+                    info += text + " - " + valor.ToString() + "\n";
+                    valor += 100;
+                }
+            }
+            MessageBox.Show(info, "Informações dos Inputs");
+        }
+
+        if (apiResponse == Respostas.Comecado)
+        {
+            MessageBox.Show("era teste kk", "Informações dos Inputs");
+            GameEngine.Current.ChangeLevel();
+        }
     }
 
 }
