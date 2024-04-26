@@ -49,7 +49,7 @@ public class Level1 : IGame
         balancas[0] = b1; balancas[1] = b2;
 
         Formas[new Circulo(new PointF(0, 0), 750)] = 5;
-        Formas[new Quadrado(new PointF(100, 0), 100)] = 5;
+        Formas[new Quadrado(new PointF(100, 0), 1000)] = 5;
         Formas[new Triangulo(new PointF(200, 0), 500)] = 5;
         Formas[new Estrela(new PointF(300, 0), 200)] = 5;
         Formas[new Hexagono(new PointF(400, 0), 100)] = 5;
