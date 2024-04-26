@@ -10,6 +10,7 @@ public partial class MainForm : Form
     private Timer timer;
     private PictureBox pb = new PictureBox { Dock = DockStyle.Fill };
     private Panel inputPanel;
+    private PictureBox navBarPictureBox;
 
     private string NomeAluno;
     private string NascimentoAluno;
@@ -40,7 +41,20 @@ public partial class MainForm : Form
         this.KeyPreview = true;
         this.KeyDown += KeyboardDown;
 
+        navBarPictureBox = new PictureBox
+        {
+            Dock = DockStyle.Top,
+            Image = Image.FromFile("assets/Navbar/boschnavbar.png"),
+            Height = 11,
+            Width = this.Width,
+            SizeMode = PictureBoxSizeMode.StretchImage
+        };
+
+        this.Resize += MainForm_Resize;
+
+
         Controls.Add(pb); // Adiciona a PictureBox ao formulário
+        Controls.Add(navBarPictureBox);
 
         Text = "Teixto";
 
@@ -84,7 +98,7 @@ public partial class MainForm : Form
         Size buttonSize = new Size((int)(inputPanel.Width * .75), (int)(inputPanel.Height * .17));
         Button getInfoButton = new Button
         {
-            Text = "Get Info",
+            Text = "Enviar Respostas",
             Font = font,
             Size = buttonSize,
             Location = new Point(inputPanel.Width / 2 - buttonSize.Width / 2, (int)(inputPanel.Height - buttonSize.Height * 1.5)),
@@ -107,6 +121,8 @@ public partial class MainForm : Form
         this.pb.Image = bitmap;
         GameEngine.Current.StartUp();
         this.timer.Start();
+
+        navBarPictureBox.Width = this.Width;
     }
 
     private void Timer_Tick(object sender, EventArgs e)
@@ -176,5 +192,11 @@ public partial class MainForm : Form
     {
         if (e.Button == MouseButtons.Left)
             ClientCursor.Soltar();
+    }
+
+    private void MainForm_Resize(object sender, EventArgs e)
+    {
+        navBarPictureBox.Width = this.Width;
+        navBarPictureBox.Height = 10;
     }
 }
