@@ -193,7 +193,7 @@ public class Level2 : IGame
                 await requester.PostAsync("test", serialized);
                 sent = true;
                 count++;
-                MessageBox.Show("Chame um instrutor para fechar a prova. ou caso algo dê errado.");
+                MessageBox.Show("Chame um instrutor para fechar a prova. Ou caso algo dê errado.");
                 CloseForm cf = new CloseForm(form);
                 cf.Show();
             }

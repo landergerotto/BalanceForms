@@ -140,7 +140,8 @@ public partial class MainForm : Form
         switch (e.KeyCode)
         {
             case Keys.Escape:
-                Application.Exit();
+                CloseForm cf = new CloseForm(this);
+                cf.Show();
                 break;
 
             case Keys.ControlKey:
