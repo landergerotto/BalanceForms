@@ -121,11 +121,20 @@ public class Level2 : IGame
 
     public void Draw(Graphics g)
     {
-
-        string texto = "Bem-vindo ao Nível 2";
+        string tituloN2 = "Bem-vindo ao Nível 2";
         Font fonte = new Font("Arial", 20);
         Brush brush1 = Brushes.Black;
-        TextLevel2(g, texto, fonte, brush1, 1900);
+        g.DrawText(tituloN2, (ClientScreen.Width - g.MeasureString(tituloN2, fonte).Width) / 2, 20, fonte, brush1);
+
+        fonte = new Font("Arial", 12);
+
+        string comentario = "2- Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso \ndas outras figuras colocando nas balanças.";
+        string msg = "Você está no nível 2. Tome cuidado para não usar peças demais.";
+        string importante = "Importante: Quando a figura é colocada na balança, você não consegue removê-la.";
+
+        g.DrawText(comentario, (ClientScreen.Width - g.MeasureString(comentario, fonte).Width) / 2, 100, fonte, brush1);
+        g.DrawText(msg, (ClientScreen.Width - g.MeasureString(msg, fonte).Width) / 2, 150, fonte, brush1);
+        g.DrawText(importante, (ClientScreen.Width - g.MeasureString(importante, fonte).Width) / 2, 200, fonte, brush1);
 
         foreach (var balanca in balancas)
             balanca.Draw(g);
@@ -213,7 +222,7 @@ public class Level2 : IGame
             else
             {
                 MessageBox.Show(
-                    "Você está no nível desafio. Tome cuidado para não usar peças demais.",
+                    "Você está no nível 2.",
                     "Informação"
                 );
                 return;
@@ -267,26 +276,5 @@ public class Level2 : IGame
         };
 
         return this.result;
-    }
-
-     public void TextLevel2(Graphics g, string texto, Font fonte, Brush brush, int larguraTela)
-    {
-        SizeF tamanhoTexto = g.MeasureString(texto, fonte);
-        float x = (larguraTela - tamanhoTexto.Width) / 2;
-        float y = 20;
-        g.DrawString(texto, fonte, brush, x, y);
-
-        float xExplicacoes = x - 400;
-        float yComentario = y + tamanhoTexto.Height + 10;
-
-        string textoComentario = "1- Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso das outras figuras colocando nas balanças.";
-        string importante = "Importante: Quando a figura é colocada na balança, você não consegue removê-la.";
-
-        Font fonteComentario = new Font("Arial", 12);
-        Brush brushComentario = Brushes.Black;
-
-
-        g.DrawString(textoComentario, fonteComentario, brushComentario, xExplicacoes, yComentario);
-        g.DrawString(importante, fonteComentario, brushComentario, xExplicacoes, yComentario + fonteComentario.Height + 5);
     }
 }

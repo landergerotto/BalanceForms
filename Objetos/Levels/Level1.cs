@@ -121,11 +121,22 @@ public class Level1 : IGame
 
     public void Draw(Graphics g)
     {
-
-        string texto = "Bem-vindo ao Nível 1";
+        string tituloN1 = "Bem-vindo ao Nível 1";
         Font fonte = new Font("Arial", 20);
         Brush brush1 = Brushes.Black;
-        TextLevel1(g, texto, fonte, brush1, 1900);
+        g.DrawText(tituloN1, (ClientScreen.Width - g.MeasureString(tituloN1, fonte).Width) / 2, 20, fonte, brush1);
+
+        fonte = new Font("Arial", 12);
+        string comentario = "1- Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso \ndas outras figuras colocando nas balanças.";
+        string msg = "Você está no nível 1. Tome cuidado para não usar peças demais.";
+        string importante = "Importante: Quando a figura é colocada na balança, você não consegue removê-la.";
+
+
+        g.DrawText(comentario, (ClientScreen.Width - g.MeasureString(comentario, fonte).Width) / 2, 100, fonte, brush1);
+        g.DrawText(msg, (ClientScreen.Width - g.MeasureString(msg, fonte).Width) / 2, 150, fonte, brush1);
+        g.DrawText(importante, (ClientScreen.Width - g.MeasureString(importante, fonte).Width) / 2, 200, fonte, brush1);
+
+
 
         foreach (var balanca in balancas)
             balanca.Draw(g);
@@ -141,7 +152,7 @@ public class Level1 : IGame
 
         foreach (var type in MesaTypes)
         {
-           var obj = type.Value[0];
+            var obj = type.Value[0];
             float fontsize = 15;
             PointF center = obj.Center;
             string text = type.Value.Count.ToString();
@@ -189,17 +200,12 @@ public class Level1 : IGame
             ConfirmationForm confirmationForm = new ConfirmationForm("Tem certeza que você quer enviar? Isso o fará avançar de nível.");
             DialogResult result = confirmationForm.ShowDialog();
             if (result == DialogResult.Yes)
-            {
                 GameEngine.Current.ChangeLevel(panel, this.result);
-                MessageBox.Show(
-                    "Você está no nível desafio. Tome cuidado para não usar peças demais.",
-                    "Informação"
-                );
-            }
+
             else
             {
                 MessageBox.Show(
-                    "Você está no nível normal. Você não avançou.",
+                    "Você está no nível 1. Você não avançou.",
                     "Informação"
                 );
                 return;
@@ -259,26 +265,5 @@ public class Level1 : IGame
         };
 
         return json;
-    }
-
-    public void TextLevel1(Graphics g, string texto, Font fonte, Brush brush, int larguraTela)
-    {
-        SizeF tamanhoTexto = g.MeasureString(texto, fonte);
-        float x = (larguraTela - tamanhoTexto.Width) / 2;
-        float y = 20;
-        g.DrawString(texto, fonte, brush, x, y);
-
-        float xExplicacoes = x - 400;
-        float yComentario = y + tamanhoTexto.Height + 10;
-
-        string textoComentario = "1- Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso das outras figuras colocando nas balanças.";
-        string importante = "Importante: Quando a figura é colocada na balança, você não consegue removê-la.";
-
-        Font fonteComentario = new Font("Arial", 12);
-        Brush brushComentario = Brushes.Black;
-
-
-        g.DrawString(textoComentario, fonteComentario, brushComentario, xExplicacoes, yComentario);
-        g.DrawString(importante, fonteComentario, brushComentario, xExplicacoes, yComentario + fonteComentario.Height + 5);
     }
 }
