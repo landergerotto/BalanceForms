@@ -15,6 +15,7 @@ public class Tutorial : IGame
 
     private List<Objeto> mesa = new List<Objeto>();
     public List<Objeto> Mesa => mesa;
+    private RectangleF mesaRect;
 
 
     public Dictionary<Objeto, int> Formas = new();
@@ -51,20 +52,40 @@ public class Tutorial : IGame
         balancas[0] = b1; balancas[1] = b2;
 
         Formas[new Circulo(new PointF(0, 0), 300)] = 5;
-        Formas[new Quadrado(new PointF(100, 0), 400)] = 5;
-        Formas[new Triangulo(new PointF(200, 0), 500)] = 5;
-        Formas[new Estrela(new PointF(300, 0), 600)] = 5;
-        Formas[new Hexagono(new PointF(400, 0), 700)] = 5;
+        Formas[new Quadrado(new PointF(125, 0), 400)] = 5;
+        Formas[new Triangulo(new PointF(250, 0), 500)] = 5;
+        Formas[new Estrela(new PointF(375, 0), 600)] = 5;
+        Formas[new Hexagono(new PointF(500, 0), 700)] = 5;
 
+        float x0 = ClientScreen.Width;
+        float x1 = 0;
+        float y0 = ClientScreen.Height;
+        float y1 = 0;
         foreach (var obj in Formas)
         {
+            Objeto _objeto = obj.Key;
+            x0 = Math.Min(x0, _objeto.X);
+            x1 = Math.Max(x1, _objeto.X + _objeto.Width);
+            y0 = Math.Min(y0, _objeto.Y);
+            y1 = Math.Max(y1, _objeto.Y + _objeto.Height);
             for (int i = 0; i < obj.Value; i++)
             {
-                Objeto objeto = obj.Key.Clone();
+                Objeto objeto = _objeto.Clone();
                 Mesa.Add(objeto);
                 objetosJogo.Add(objeto);
             }
         }
+
+        SizeF mesa_size = new SizeF(x1 - x0, y1 - y0);
+        PointF mesa_pos = new PointF(x0 + ClientScreen.Center.X - mesa_size.Width / 2, y0 + ClientScreen.Height - mesa_size.Height - 50);
+        foreach (var obj in Mesa)
+            obj.Move(new PointF(obj.Position.X + mesa_pos.X - x0, obj.Position.Y + mesa_pos.Y - y0));
+        
+        float rectBorder = 25;
+        this.mesaRect = new RectangleF(
+            new PointF(mesa_pos.X - rectBorder, mesa_pos.Y - rectBorder),
+            new SizeF(mesa_size.Width + rectBorder * 2, mesa_size.Height + rectBorder * 2)
+        );
     }
     public async void Update(Panel panel, string nome, string nasc)
     {
@@ -87,6 +108,10 @@ public class Tutorial : IGame
     {
         foreach (var balanca in balancas)
             balanca.Draw(g);
+
+        SolidBrush rectbrush = new SolidBrush(Color.LightGray);
+        g.FillRectangle(rectbrush, this.mesaRect.OnScreen());
+        rectbrush.Dispose();
 
         foreach (var obj in ObjectManager.Objetos)
             obj.Draw(g);

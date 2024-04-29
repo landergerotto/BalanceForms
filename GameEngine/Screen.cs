@@ -6,6 +6,7 @@ public static class ClientScreen
     public static SizeF Size { get; set; } = new SizeF(1920, 1080);
     public static float Width => Size.Width;
     public static float Height => Size.Height;
+    public static PointF Center => new PointF(Width / 2, Height / 2);
 
     public static RectangleF OnScreen(float x, float y, float width, float height)
     {
@@ -20,6 +21,8 @@ public static class ClientScreen
     }
     public static RectangleF OnScreen(PointF position, SizeF size)
         => OnScreen(position.X, position.Y, size.Width, size.Height);
+    public static RectangleF OnScreen(this RectangleF rect)
+        => OnScreen(rect.X, rect.Y, rect.Width, rect.Height);
 
     public static void DrawImageOnScreen(this Graphics g, Image image, PointF position, SizeF size)
     {

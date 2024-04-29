@@ -9,6 +9,8 @@ public abstract class Objeto
     public SizeF Size { get; set; }
     public PointF Position { get; private set; }
     
+    public float X => Position.X;
+    public float Y => Position.Y;
     public float Width => Size.Width;
     public float Height => Size.Height;
     public RectangleF Hitbox => new RectangleF(Position, Size);
