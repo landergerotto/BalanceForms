@@ -13,6 +13,7 @@ public class CloseForm : Form
     {
         this.ParentFormToClose = parentFormToClose;
         Text = "Tela Inicial";
+        TopMost = true;
         Size = new Size(500, 250);
         FormBorderStyle = FormBorderStyle.FixedDialog;
         StartPosition = FormStartPosition.CenterScreen;
@@ -51,6 +52,16 @@ public class CloseForm : Form
         Controls.Add(label2);
         Controls.Add(input2);
         Controls.Add(startButton);
+
+        Timer focusTimer = new Timer();
+        focusTimer.Interval = 100; // Set interval to 100 milliseconds
+        focusTimer.Tick += (sender, e) =>
+        {
+            if (!this.Focused)
+            {
+                this.Activate(); // Try to bring the form to the front and focus it
+            }
+        };
     }
 
     private void StartButton_Click(object sender, EventArgs e)
