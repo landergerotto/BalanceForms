@@ -1,9 +1,21 @@
 {
-    nome: "",
-    nascimento: "",
-    prova1: { todas as formas },
-    prova2: { todas as formas },
-    tempo: 00,
-    qntdutilizada: 00,
-    percacertos: 00
+    "nome": "Teste",
+    "nascimento": "24/04/2004",
+    "prova1": { 
+      "triangulo": 0,
+      "quadrado": 0,
+      "circulo": 0,
+      "estrela": 0,
+      "hexagono": 0
+    },
+    "prova2": { 
+      "triangulo": 0,
+      "quadrado": 0,
+      "circulo": 0,
+      "estrela": 0,
+      "hexagono": 0
+    },
+    "tempo": 0,
+    "quantidade": 0,
+    "acertos": 0.4
 }

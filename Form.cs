@@ -128,7 +128,7 @@ public partial class MainForm : Form
     private void Timer_Tick(object sender, EventArgs e)
     {
         g.Clear(Color.White);
-        GameEngine.Current.Update();
+        GameEngine.Current.Update(inputPanel, this.NomeAluno, this.NascimentoAluno);
         GameEngine.Current.Draw(g);
         pb.Refresh();
     }
@@ -148,7 +148,7 @@ public partial class MainForm : Form
 
     private void GetInfoButton_Click(object sender, EventArgs e)
     {
-        GameEngine.Current.JogoAtual.Enviar(inputPanel);
+        GameEngine.Current.JogoAtual.Enviar(inputPanel, this.NomeAluno, this.NascimentoAluno);
     }
 
     private void TextBox_KeyPress(object sender, KeyPressEventArgs e)

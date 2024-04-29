@@ -39,6 +39,8 @@ public class Tutorial : IGame
         }
     }
 
+    public TestResult result { get; set; }
+
     private HttpRequester requester = new("http://127.0.0.1:5000/");
     private Respostas apiResponse;
     public Tutorial()
@@ -64,7 +66,7 @@ public class Tutorial : IGame
             }
         }
     }
-    public async void Update()
+    public async void Update(Panel panel, string nome, string nasc)
     {
         await TestRequestAsync();
         foreach (var balanca in balancas)
@@ -110,7 +112,7 @@ public class Tutorial : IGame
         this.apiResponse = b.response;
     }
 
-    public void Enviar(Panel panel)
+    public void Enviar(Panel panel, string nome, string nasc)
     {
         MessageBox.Show(apiResponse.ToString(), "Informações dos Inputs");
         if (apiResponse != Respostas.Comecado)
@@ -137,7 +139,7 @@ public class Tutorial : IGame
         if (apiResponse == Respostas.Comecado)
         {
             MessageBox.Show("era teste kk", "Informações dos Inputs");
-            GameEngine.Current.ChangeLevel();
+            GameEngine.Current.ChangeLevel(panel, result);
         }
     }
 

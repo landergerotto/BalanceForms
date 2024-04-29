@@ -8,7 +8,8 @@ public interface IGame
     List<int> QuantidadeObjeto { get; }
     Balanca[] Balancas { get; }
     List<Objeto> Mesa { get; }
-    void Update();
+    TestResult result { get; set;}
+    void Update(Panel panel, string nome, string nasc);
     void Draw(Graphics g);
-    void Enviar(Panel panel);
+    void Enviar(Panel panel, string nome, string nasc);
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 public class GameEngine
 {
@@ -13,34 +14,43 @@ public class GameEngine
     private int index
     {
         get => _index;
-        set {
+        set
+        {
             _index = value;
             JogoAtual = Games[index];
             ObjectManager.SetList(JogoAtual.ObjetosJogo);
         }
     }
-    private GameEngine( ) { }
+    private GameEngine() { }
 
-    public void StartUp( )
+    public void StartUp()
     {
         Games = new List<IGame>(){
             new Tutorial(),
-            new Level1()
+            new Level1(),
+            new Level2()
         };
         JogoAtual = Games[index];
         ObjectManager.SetList(JogoAtual.ObjetosJogo);
 
     }
-    public void ChangeLevel()
+    public void ChangeLevel(Panel panel, TestResult result)
     {
         index++;
+        JogoAtual.result = result;
+        foreach (Control control in panel.Controls)
+        {
+            if (control is TextBox)
+                ((TextBox)control).Text = "";
+
+        }
     }
-    public void Update( ) 
-    { 
-        JogoAtual.Update( );
+    public void Update(Panel panel, string nome, string nasc)
+    {
+        JogoAtual.Update(panel, nome, nasc);
     }
-    public void Draw (Graphics g)
+    public void Draw(Graphics g)
         => JogoAtual.Draw(g);
 
-    public static void New() => current = new GameEngine( );
+    public static void New() => current = new GameEngine();
 }

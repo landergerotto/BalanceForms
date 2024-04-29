@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -9,17 +11,16 @@ public class Level1 : IGame
     private List<Objeto> objetosJogo = new List<Objeto>();
     public List<Objeto> ObjetosJogo => objetosJogo;
 
-
     private Balanca[] balancas = new Balanca[2];
     public Balanca[] Balancas => balancas;
 
     private List<Objeto> mesa = new List<Objeto>();
     public List<Objeto> Mesa => mesa;
 
-
     public Dictionary<Objeto, int> Formas = new();
 
     public List<int> QuantidadeObjeto => QuantidadeObjeto;
+    private int count = 0;
     
     public Dictionary<Type, List<Objeto>> MesaTypes
     {
@@ -38,7 +39,7 @@ public class Level1 : IGame
             return types;
         }
     }
-
+    public TestResult result { get; set; }
     private HttpRequester requester = new("http://127.0.0.1:5000/");
     private Respostas apiResponse;
     public Level1()
@@ -64,9 +65,9 @@ public class Level1 : IGame
             }
         }
     }
-    public async void Update()
+    public async void Update(Panel panel, string nome, string nasc)
     {
-        await TestRequestAsync();
+        await TestRequestAsync(panel, nome, nasc);
         foreach (var balanca in balancas)
         {
             balanca.Update();
@@ -103,41 +104,85 @@ public class Level1 : IGame
             g.DrawString((type.Value.Count - ( ClientCursor.Objeto?.GetType() == obj.GetType() ? 1 : 0)).ToString(), font, brush, center.X - font.Size / 2, center.Y - font.Size / 2);
         }
     }
-    private async Task TestRequestAsync()
+    private async Task TestRequestAsync(Panel panel, string nome, string nasc)
     {
         string a = await requester.GetAsync("test");
         var b = Json.DeserializeResponse(a);
         this.apiResponse = b.response;
-    }
 
-    public void Enviar(Panel panel)
-    {
-        if (apiResponse != Respostas.Comecado)
-        {
-            string info = "";
-            int valor = 200;
+        if (apiResponse == Respostas.Parou)
+        {   
+            if (count > 0)
+               return;
+
+            int ind = 0;
+            TextBox[] textboxes = new TextBox[4]; 
             foreach (Control control in panel.Controls)
             {
-                if (valor == 500)
-                    valor += 100;
-
                 if (control is TextBox)
                 {
-                    var text = ((TextBox)control).Text;
-                    if (text is "")
-                        text = "0";
-                    info += text + " - " + valor.ToString() + "\n";
-                    valor += 100;
+                    textboxes[ind] = (TextBox)control;
+                    ind++;
                 }
             }
-            MessageBox.Show(info, "Informações dos Inputs");
-        }
 
+            var json = new TestResult 
+            {
+                nome = nome,
+                nascimento = nasc,
+                prova1 = new Prova {
+                    triangulo = 500,
+                    quadrado = int.Parse(textboxes[0].Text),
+                    circulo = int.Parse(textboxes[1].Text),
+                    estrela = int.Parse(textboxes[2].Text),
+                    hexagono = int.Parse(textboxes[3].Text),
+                },
+                prova2 = new Prova{ },
+                tempo = 2600,
+                quantidade = 0,
+                acertos = 0.4
+            };
+            this.result = json;
+
+            var serialized = Json.SerializeToJson(json);
+            await requester.PostAsync("test",  serialized);
+            count++;
+        }
+    }
+  
+    public void Enviar(Panel panel, string nome, string nasc)
+    {
         if (apiResponse == Respostas.Comecado)
         {
-            MessageBox.Show("Cabo lek", "Informações dos Inputs");
+            int ind = 0;
+            TextBox[] textboxes = new TextBox[4]; 
+            foreach (Control control in panel.Controls)
+            {
+                if (control is TextBox)
+                {
+                    textboxes[ind] = (TextBox)control;
+                    ind++;
+                }
+            }
 
-            // GameEngine.Current.ChangeLevel();
+            var json = new TestResult 
+            {
+                nome = nome,
+                nascimento = nasc,
+                prova1 = new Prova {
+                    triangulo = 500,
+                    quadrado = int.Parse(textboxes[0].Text),
+                    circulo = int.Parse(textboxes[1].Text),
+                    estrela = int.Parse(textboxes[2].Text),
+                    hexagono = int.Parse(textboxes[3].Text),
+                },
+                prova2 = new Prova{ },
+                tempo = 2600,
+                quantidade = 0,
+                acertos = 0.4
+            };
+            this.result = json;
+            GameEngine.Current.ChangeLevel(panel, this.result);
         }
     }
 
