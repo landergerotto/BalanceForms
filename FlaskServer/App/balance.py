@@ -1,5 +1,7 @@
 from flask import Flask, Blueprint, render_template, request, redirect
 import xlsxwriter as xl
+from datetime import datetime
+import os
 import time
 
 app = Flask(__name__)
@@ -34,7 +36,19 @@ def createWorkbook():
     global crr
     
     answer_row = 2
-    workbook = xl.Workbook('../Resultados.xlsx')
+
+    current_date = datetime.now()
+    midday = current_date.replace(hour=12, minute=0, second=0, microsecond=0)
+    date = current_date.strftime('%d-%m-%Y')
+    period = 'Manhã' if current_date < midday else 'Tarde'
+
+    if not os.path.exists('../Provas'):
+        os.mkdir('../Provas')
+
+    if not os.path.exists(f'../Provas/{date}'):
+        os.mkdir(f'../Provas/{date}')
+
+    workbook = xl.Workbook(f'../Provas/{date}/{period}.xlsx')
     worksheet1 = workbook.add_worksheet('Prova1')
     worksheet2 = workbook.add_worksheet('Prova2')
 
