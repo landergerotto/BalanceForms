@@ -133,58 +133,9 @@ public class Level1 : IGame
             if (count > 0)
                 return;
 
-            int ind = 0;
-            TextBox[] textboxes = new TextBox[4];
+            this.result = BuildJson(panel, nome, nasc);
 
-            for (int i = 0; i < panel.Controls.Count; i++)
-            {
-                if (i == 1)
-                    continue;
-
-                if (panel.Controls[i] is TextBox)
-                {
-                    textboxes[ind] = (TextBox)panel.Controls[i];
-                    ind++;
-                }
-                
-            }
-
-            textboxes[0].Text = textboxes[0].Text == "" ? "0" : textboxes[0].Text;
-            textboxes[1].Text = textboxes[1].Text == "" ? "0" : textboxes[1].Text;
-            textboxes[2].Text = textboxes[2].Text == "" ? "0" : textboxes[2].Text;
-            textboxes[3].Text = textboxes[3].Text == "" ? "0" : textboxes[3].Text;
-            
-            float acertos = 0;
-
-            if (textboxes[0].Text == "1000")
-                acertos++;
-            if (textboxes[1].Text == "750")
-                acertos++;
-            if (textboxes[2].Text == "200")
-                acertos++;
-            if (textboxes[0].Text == "100")
-                acertos++;
-
-            var json = new TestResult
-            {
-                nome = nome,
-                nascimento = nasc,
-                prova1 = new Prova
-                {
-                    triangulo = 500,
-                    quadrado = int.Parse(textboxes[0].Text),
-                    circulo = int.Parse(textboxes[1].Text),
-                    estrela = int.Parse(textboxes[2].Text),
-                    hexagono = int.Parse(textboxes[3].Text),
-                    tempo = (int)TestTimer.Stop().TotalSeconds,
-                    quantidade = Balancas.Sum(balanca => balanca.Count),
-                    acertos = acertos / 4
-                },
-                prova2 = new Prova { },
-            };
-            this.result = json;
-
-            var serialized = Json.SerializeToJson(json);
+            var serialized = Json.SerializeToJson(this.result);
             await requester.PostAsync("test", serialized);
             count++;
         }
@@ -194,56 +145,7 @@ public class Level1 : IGame
     {
         if (apiResponse == Respostas.Comecado)
         {
-            int ind = 0;
-            TextBox[] textboxes = new TextBox[4];
-
-            for (int i = 0; i < panel.Controls.Count; i++)
-            {
-                if (i == 1)
-                    continue;
-
-                if (panel.Controls[i] is TextBox)
-                {
-                    textboxes[ind] = (TextBox)panel.Controls[i];
-                    ind++;
-                }
-                
-            }
-
-            textboxes[0].Text = textboxes[0].Text == "" ? "0" : textboxes[0].Text;
-            textboxes[1].Text = textboxes[1].Text == "" ? "0" : textboxes[1].Text;
-            textboxes[2].Text = textboxes[2].Text == "" ? "0" : textboxes[2].Text;
-            textboxes[3].Text = textboxes[3].Text == "" ? "0" : textboxes[3].Text;
-
-            float acertos = 0;
-
-            if (textboxes[0].Text == "1000")
-                acertos++;
-            if (textboxes[1].Text == "750")
-                acertos++;
-            if (textboxes[2].Text == "200")
-                acertos++;
-            if (textboxes[3].Text == "100")
-                acertos++;
-
-            var json = new TestResult
-            {
-                nome = nome,
-                nascimento = nasc,
-                prova1 = new Prova
-                {
-                    triangulo = 500,
-                    quadrado = int.Parse(textboxes[0].Text),
-                    circulo = int.Parse(textboxes[1].Text),
-                    estrela = int.Parse(textboxes[2].Text),
-                    hexagono = int.Parse(textboxes[3].Text),
-                    tempo = (int)TestTimer.Stop().TotalSeconds,
-                    quantidade = Balancas.Sum(balanca => balanca.Count),
-                    acertos = acertos / 4
-                },
-                prova2 = new Prova { },
-            };
-            this.result = json;
+            this.result = BuildJson(panel, nome, nasc);
 
             MessageBox.Show(
                 "O teste de verdade começa agora. Você está no nível desfaio",
@@ -251,5 +153,59 @@ public class Level1 : IGame
             );
             GameEngine.Current.ChangeLevel(panel, this.result);
         }
+    }
+
+    private TestResult BuildJson(Panel panel, string nome, string nasc)
+    {
+        int ind = 0;
+        TextBox[] textboxes = new TextBox[4];
+
+        for (int i = 0; i < panel.Controls.Count; i++)
+        {
+            if (i == 1)
+                continue;
+
+            if (panel.Controls[i] is TextBox)
+            {
+                textboxes[ind] = (TextBox)panel.Controls[i];
+                ind++;
+            }
+        }
+
+        textboxes[0].Text = textboxes[0].Text == "" ? "0" : textboxes[0].Text;
+        textboxes[1].Text = textboxes[1].Text == "" ? "0" : textboxes[1].Text;
+        textboxes[2].Text = textboxes[2].Text == "" ? "0" : textboxes[2].Text;
+        textboxes[3].Text = textboxes[3].Text == "" ? "0" : textboxes[3].Text;
+
+        float acertos = 0;
+
+        if (textboxes[0].Text == "1000")
+            acertos++;
+        if (textboxes[1].Text == "750")
+            acertos++;
+        if (textboxes[2].Text == "200")
+            acertos++;
+        if (textboxes[3].Text == "100")
+            acertos++;
+
+        var json = new TestResult
+        {
+            nome = nome,
+            nascimento = nasc,
+            prova1 = new Prova
+            {
+                triangulo = 500,
+                quadrado = int.Parse(textboxes[0].Text),
+                circulo = int.Parse(textboxes[1].Text),
+                estrela = int.Parse(textboxes[2].Text),
+                hexagono = int.Parse(textboxes[3].Text),
+                tempo = (int)TestTimer.Stop().TotalSeconds,
+                quantidade = Balancas.Sum(balanca => balanca.Count),
+                acertos = acertos / 4
+            },
+            prova2 = new Prova { },
+        };
+
+        return json;
     }
 }
