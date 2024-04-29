@@ -150,7 +150,7 @@ public partial class MainForm : Form
 
     private void GetInfoButton_Click(object sender, EventArgs e)
     {
-        GameEngine.Current.JogoAtual.Enviar(inputPanel, this.NomeAluno, this.NascimentoAluno);
+        GameEngine.Current.JogoAtual.Enviar(inputPanel, this.NomeAluno, this.NascimentoAluno, this);
     }
 
     private void TextBox_KeyPress(object sender, KeyPressEventArgs e)

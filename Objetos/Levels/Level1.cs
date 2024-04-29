@@ -148,6 +148,12 @@ public class Level1 : IGame
                 }
                 
             }
+
+            textboxes[0].Text = textboxes[0].Text == "" ? "0" : textboxes[0].Text;
+            textboxes[1].Text = textboxes[1].Text == "" ? "0" : textboxes[1].Text;
+            textboxes[2].Text = textboxes[2].Text == "" ? "0" : textboxes[2].Text;
+            textboxes[3].Text = textboxes[3].Text == "" ? "0" : textboxes[3].Text;
+            
             float acertos = 0;
 
             if (textboxes[0].Text == "1000")
@@ -184,7 +190,7 @@ public class Level1 : IGame
         }
     }
 
-    public void Enviar(Panel panel, string nome, string nasc)
+    public void Enviar(Panel panel, string nome, string nasc, Form form)
     {
         if (apiResponse == Respostas.Comecado)
         {
@@ -203,6 +209,11 @@ public class Level1 : IGame
                 }
                 
             }
+
+            textboxes[0].Text = textboxes[0].Text == "" ? "0" : textboxes[0].Text;
+            textboxes[1].Text = textboxes[1].Text == "" ? "0" : textboxes[1].Text;
+            textboxes[2].Text = textboxes[2].Text == "" ? "0" : textboxes[2].Text;
+            textboxes[3].Text = textboxes[3].Text == "" ? "0" : textboxes[3].Text;
 
             float acertos = 0;
 

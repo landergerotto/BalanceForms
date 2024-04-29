@@ -138,6 +138,11 @@ public class Level2 : IGame
                     ind++;
                 } 
             }
+            
+            textboxes[0].Text = textboxes[0].Text == "" ? "0" : textboxes[0].Text;
+            textboxes[1].Text = textboxes[1].Text == "" ? "0" : textboxes[1].Text;
+            textboxes[2].Text = textboxes[2].Text == "" ? "0" : textboxes[2].Text;
+            textboxes[3].Text = textboxes[3].Text == "" ? "0" : textboxes[3].Text;
 
             float acertos = 0;
 
@@ -168,7 +173,7 @@ public class Level2 : IGame
         }
     }
   
-    public async void Enviar(Panel panel, string nome, string nasc)
+    public async void Enviar(Panel panel, string nome, string nasc, Form form)
     {
         if (apiResponse == Respostas.Comecado)
         {
@@ -192,6 +197,11 @@ public class Level2 : IGame
                     ind++;
                 }
             }
+
+            textboxes[0].Text = textboxes[0].Text == "" ? "0" : textboxes[0].Text;
+            textboxes[1].Text = textboxes[1].Text == "" ? "0" : textboxes[1].Text;
+            textboxes[2].Text = textboxes[2].Text == "" ? "0" : textboxes[2].Text;
+            textboxes[3].Text = textboxes[3].Text == "" ? "0" : textboxes[3].Text;
 
             float acertos = 0;
 
@@ -222,7 +232,9 @@ public class Level2 : IGame
             sent = true;
             count++;
             MessageBox.Show("Você finalizou os desafios. Parabéns!", "Parabéns!");
-            
+            CloseForm cf = new CloseForm(form);
+            cf.Show();
+
         }
     }
 
