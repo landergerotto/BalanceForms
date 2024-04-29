@@ -222,7 +222,7 @@ public class Level2 : IGame
             sent = true;
             count++;
             MessageBox.Show("Você finalizou os desafios. Parabéns!", "Parabéns!");
-
+            
         }
     }
 
