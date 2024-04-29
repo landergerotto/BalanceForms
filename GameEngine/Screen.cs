@@ -53,4 +53,16 @@ public static class ClientScreen
     }
     public static SizeF SizeOnScreen(SizeF size)
         => SizeOnScreen(size.Width, size.Height);
+
+    public static void DrawText(this Graphics g, string text, float x, float y, Font font, Brush brush)
+    {
+        float fontsize = font.Size;
+        RectangleF textRect = ClientScreen.OnScreen(
+            x, y, fontsize * text.Length, fontsize
+        );
+        font = new Font(font.Name, textRect.Height);
+        g.DrawString(text, font, brush, new PointF(textRect.X, textRect.Y));
+    }
+    public static void DrawText(this Graphics g, string text, PointF position, Font font, Brush brush)
+        => DrawText(g, text, position.X, position.Y, font, brush);
 }
