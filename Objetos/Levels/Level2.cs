@@ -21,7 +21,6 @@ public class Level2 : IGame
 
     public List<int> QuantidadeObjeto => QuantidadeObjeto;
     private int count = 0;
-    
     public Dictionary<Type, List<Objeto>> MesaTypes
     {
         get
@@ -43,6 +42,7 @@ public class Level2 : IGame
     private HttpRequester requester = new("http://127.0.0.1:5000/");
     private Respostas apiResponse;
     private bool timerCount = false;
+    private bool sent = false;
 
     public Level2()
     {
@@ -117,6 +117,9 @@ public class Level2 : IGame
         var b = Json.DeserializeResponse(a);
         this.apiResponse = b.response;
 
+        if(sent)
+            return;
+
         if (apiResponse == Respostas.Parou)
         {   
             if (count > 0)
@@ -146,6 +149,7 @@ public class Level2 : IGame
 
             this.result.prova2 = new Prova
             {
+                triangulo = 500,
                 quadrado = int.Parse(textboxes[0].Text),
                 circulo = int.Parse(textboxes[1].Text),
                 estrela = int.Parse(textboxes[2].Text),
@@ -192,6 +196,7 @@ public class Level2 : IGame
 
             this.result.prova2 = new Prova
             {
+                triangulo = 500,
                 quadrado = int.Parse(textboxes[0].Text),
                 circulo = int.Parse(textboxes[1].Text),
                 estrela = int.Parse(textboxes[2].Text),
@@ -203,6 +208,7 @@ public class Level2 : IGame
             
             var serialized = Json.SerializeToJson(this.result);
             await requester.PostAsync("test",  serialized);
+            sent = true;
             count++;
         }
     }
