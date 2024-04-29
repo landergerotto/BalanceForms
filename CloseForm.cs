@@ -18,12 +18,12 @@ public class CloseForm : Form
         StartPosition = FormStartPosition.CenterScreen;
         BackColor = Color.LightGray;
 
-        Label label1 = new Label { Text = "Nome Completo:", AutoSize = true };
+        Label label1 = new Label { Text = "Usuário:", AutoSize = true };
 
         input1 = new TextBox();
         input1.Width = 250;
 
-        Label label2 = new Label { Text = "Data de Nascimento:", AutoSize = true };
+        Label label2 = new Label { Text = "Senha:", AutoSize = true };
 
         input2 = new TextBox();
         input2.Width = 250;

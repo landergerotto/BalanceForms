@@ -70,10 +70,8 @@ public class Tutorial : IGame
     {
         await TestRequestAsync();
         foreach (var balanca in balancas)
-        {
             balanca.Update();
-        }
-
+        
         foreach (var type in MesaTypes)
         {
             PointF position = type.Value[0].Position;
@@ -91,10 +89,8 @@ public class Tutorial : IGame
             balanca.Draw(g);
 
         foreach (var obj in ObjectManager.Objetos)
-        {
             obj.Draw(g);
-        }
-
+        
         foreach (var type in MesaTypes)
         {
             var obj = type.Value[0];
