@@ -79,10 +79,15 @@ public class Level1 : IGame
         }
 
         SizeF mesa_size = new SizeF(x1 - x0, y1 - y0);
-        PointF mesa_pos = new PointF(x0 + ClientScreen.Center.X - mesa_size.Width / 2, y0 + ClientScreen.Height - mesa_size.Height - 50);
+        PointF mesa_pos = new PointF(
+            x0 + ClientScreen.Center.X - mesa_size.Width / 2,
+            y0 + ClientScreen.Height - mesa_size.Height - 50
+        );
         foreach (var obj in Mesa)
-            obj.Move(new PointF(obj.Position.X + mesa_pos.X - x0, obj.Position.Y + mesa_pos.Y - y0));
-        
+            obj.Move(
+                new PointF(obj.Position.X + mesa_pos.X - x0, obj.Position.Y + mesa_pos.Y - y0)
+            );
+
         float rectBorder = 25;
         this.mesaRect = new RectangleF(
             new PointF(mesa_pos.X - rectBorder, mesa_pos.Y - rectBorder),
@@ -122,7 +127,7 @@ public class Level1 : IGame
         SolidBrush rectbrush = new SolidBrush(Color.LightGray);
         g.FillRectangle(rectbrush, this.mesaRect.OnScreen());
         rectbrush.Dispose();
-        
+
         foreach (var obj in ObjectManager.Objetos)
         {
             obj.Draw(g);
@@ -172,11 +177,24 @@ public class Level1 : IGame
         {
             this.result = BuildJson(panel, nome, nasc);
 
-            MessageBox.Show(
-                "O teste de verdade começa agora. Você está no nível desfaio",
-                "Informações dos Inputs"
-            );
-            GameEngine.Current.ChangeLevel(panel, this.result);
+            ConfirmationForm confirmationForm = new ConfirmationForm("Tem certeza que você quer enviar? Isso o fará avançar de nível.");
+            DialogResult result = confirmationForm.ShowDialog();
+            if (result == DialogResult.Yes)
+            {
+                GameEngine.Current.ChangeLevel(panel, this.result);
+                MessageBox.Show(
+                    "Você está no nível desafio. Tome cuidado para não usar peças demais.",
+                    "Informação"
+                );
+            }
+            else
+            {
+                MessageBox.Show(
+                    "Você está no nível normal. Você não avançou.",
+                    "Informação"
+                );
+                return;
+            }
         }
     }
 
