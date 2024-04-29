@@ -54,10 +54,10 @@ public class Level1 : IGame
         balancas[1] = b2;
 
         Formas[new Circulo(new PointF(0, 0), 750)] = 5;
-        Formas[new Quadrado(new PointF(100, 0), 1000)] = 5;
-        Formas[new Triangulo(new PointF(200, 0), 500)] = 5;
-        Formas[new Estrela(new PointF(300, 0), 200)] = 5;
-        Formas[new Hexagono(new PointF(400, 0), 100)] = 5;
+        Formas[new Quadrado(new PointF(125, 0), 1000)] = 5;
+        Formas[new Triangulo(new PointF(250, 0), 500)] = 5;
+        Formas[new Estrela(new PointF(375, 0), 200)] = 5;
+        Formas[new Hexagono(new PointF(500, 0), 100)] = 5;
 
         float x0 = ClientScreen.Width;
         float x1 = 0;
@@ -121,6 +121,12 @@ public class Level1 : IGame
 
     public void Draw(Graphics g)
     {
+
+        string texto = "Bem-vindo ao Nível 1";
+        Font fonte = new Font("Arial", 20);
+        Brush brush1 = Brushes.Black;
+        TextLevel1(g, texto, fonte, brush1, 1900);
+
         foreach (var balanca in balancas)
             balanca.Draw(g);
 
@@ -135,20 +141,23 @@ public class Level1 : IGame
 
         foreach (var type in MesaTypes)
         {
-            var obj = type.Value[0];
-
-            Font font = new Font("Arial", 15);
-            SolidBrush brush = new SolidBrush(Color.Black);
+           var obj = type.Value[0];
+            float fontsize = 15;
             PointF center = obj.Center;
-            g.DrawString(
-                (
-                    type.Value.Count - (ClientCursor.Objeto?.GetType() == obj.GetType() ? 1 : 0)
-                ).ToString(),
-                font,
-                brush,
-                center.X - font.Size / 2,
-                center.Y - font.Size / 2
+            string text = type.Value.Count.ToString();
+            RectangleF textRect = ClientScreen.OnScreen(
+                center.X - (fontsize / 2) * text.Length,
+                center.Y - (fontsize / 2) * text.Length,
+                fontsize * text.Length, fontsize
             );
+
+            Font font = new Font("Arial", textRect.Height);
+            SolidBrush brush = new SolidBrush(Color.Black);
+
+            g.DrawString(
+                (type.Value.Count - (ClientCursor.Objeto?.GetType() == obj.GetType() ? 1 : 0)).ToString(),
+                font, brush,
+                new PointF(textRect.X, textRect.Y));
         }
     }
 
@@ -250,5 +259,26 @@ public class Level1 : IGame
         };
 
         return json;
+    }
+
+    public void TextLevel1(Graphics g, string texto, Font fonte, Brush brush, int larguraTela)
+    {
+        SizeF tamanhoTexto = g.MeasureString(texto, fonte);
+        float x = (larguraTela - tamanhoTexto.Width) / 2;
+        float y = 20;
+        g.DrawString(texto, fonte, brush, x, y);
+
+        float xExplicacoes = x - 400;
+        float yComentario = y + tamanhoTexto.Height + 10;
+
+        string textoComentario = "1- Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso das outras figuras colocando nas balanças.";
+        string importante = "Importante: Quando a figura é colocada na balança, você não consegue removê-la.";
+
+        Font fonteComentario = new Font("Arial", 12);
+        Brush brushComentario = Brushes.Black;
+
+
+        g.DrawString(textoComentario, fonteComentario, brushComentario, xExplicacoes, yComentario);
+        g.DrawString(importante, fonteComentario, brushComentario, xExplicacoes, yComentario + fonteComentario.Height + 5);
     }
 }

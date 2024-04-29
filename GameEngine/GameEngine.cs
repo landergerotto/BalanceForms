@@ -21,6 +21,10 @@ public class GameEngine
             ObjectManager.SetList(JogoAtual.ObjetosJogo);
         }
     }
+
+    public Bitmap Banner { get; private set; }
+    public Bitmap Logo { get; private set; }
+
     private GameEngine() { }
 
     public void StartUp()
@@ -32,7 +36,8 @@ public class GameEngine
         };
         JogoAtual = Games[index];
         ObjectManager.SetList(JogoAtual.ObjetosJogo);
-
+        Banner = (Bitmap)Bitmap.FromFile("./assets/Navbar/boschnavbar.png");
+        Logo = (Bitmap)Bitmap.FromFile("./assets/Navbar/logo-bosch.png");
     }
     public void ChangeLevel(Panel panel, TestResult result)
     {
@@ -52,7 +57,20 @@ public class GameEngine
         JogoAtual.Update(panel, nome, nasc);
     }
     public void Draw(Graphics g)
-        => JogoAtual.Draw(g);
+    {
+        g.DrawImageOnScreen(
+            Banner,
+            new PointF(0, -(ClientScreen.Height * .75f)),
+            ClientScreen.Size);
+
+        g.DrawImageOnScreen(
+            Logo,
+            new PointF(10, 10),
+            new SizeF(ClientScreen.Width * .10f, ClientScreen.Height * .10f)
+        );
+            
+        JogoAtual.Draw(g);
+    }
 
     public static void New() => current = new GameEngine();
 }

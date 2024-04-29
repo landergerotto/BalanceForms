@@ -39,10 +39,10 @@ public class Triangulo : Objeto
     }
     public Triangulo(int valor = 500) : this(new PointF(0, 0), valor) {}
 
-    public override PointF Center => new PointF(
-        Position.X + Size.Width / 2,
-        (Position.Y + (Position.Y + Size.Height) * 2) / 3
-        );
+    // public override PointF Center => new PointF(
+    //     Position.X + Size.Width / 2,
+    //     (Position.Y + (Position.Y + Size.Height) * 2) / 3
+    //     );
 
     public override Triangulo Clone()
         => new Triangulo(this.Position, this.Valor);
