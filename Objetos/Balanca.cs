@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 public class Balanca
@@ -15,6 +16,7 @@ public class Balanca
     public float Y => Position.Y;
     public float Width => Tamanho.Width;
     public float Height => Tamanho.Height;
+    public int Count => Pratos.Sum(prato => prato.Count);
 
     public Balanca(float x, float y, float width = 800, float height = 450)
     {

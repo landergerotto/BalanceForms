@@ -138,7 +138,7 @@ public class Tutorial : IGame
 
         if (apiResponse == Respostas.Comecado)
         {
-            MessageBox.Show("Era o Tutorial KK", "Informações dos Inputs");
+            MessageBox.Show("O teste de verdade começa agora. Você está no nível normal", "Informações dos Inputs");
             GameEngine.Current.ChangeLevel(panel, result);
         }
     }

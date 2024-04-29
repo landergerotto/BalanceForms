@@ -154,7 +154,7 @@ public class Level1 : IGame
                     estrela = int.Parse(textboxes[2].Text),
                     hexagono = int.Parse(textboxes[3].Text),
                     tempo = (int)TestTimer.Stop().TotalSeconds,
-                    quantidade = 0,
+                    quantidade = Balancas.Sum(balanca => balanca.Count),
                     acertos = acertos / 4
                 },
                 prova2 = new Prova{ },
@@ -204,7 +204,7 @@ public class Level1 : IGame
                     estrela = int.Parse(textboxes[2].Text),
                     hexagono = int.Parse(textboxes[3].Text),
                     tempo = (int)TestTimer.Stop().TotalSeconds,
-                    quantidade = 0,
+                    quantidade = Balancas.Sum(balanca => balanca.Count),
                     acertos = acertos / 4
                 },
                 prova2 = new Prova{ },
@@ -212,6 +212,7 @@ public class Level1 : IGame
             };
             this.result = json;
 
+            MessageBox.Show("O teste de verdade começa agora. Você está no nível desfaio", "Informações dos Inputs");
             GameEngine.Current.ChangeLevel(panel, this.result);
         }
     }

@@ -155,7 +155,7 @@ public class Level2 : IGame
                 estrela = int.Parse(textboxes[2].Text),
                 hexagono = int.Parse(textboxes[3].Text),
                 tempo = (int)TestTimer.Stop().TotalSeconds,
-                quantidade = 10,
+                quantidade = Balancas.Sum(balanca => balanca.Count),
                 acertos = acertos / 4
             };
             
@@ -169,6 +169,9 @@ public class Level2 : IGame
     {
         if (apiResponse == Respostas.Comecado)
         {
+            if(sent)
+                return;
+
             if (count > 0)
                return;
 
@@ -202,7 +205,7 @@ public class Level2 : IGame
                 estrela = int.Parse(textboxes[2].Text),
                 hexagono = int.Parse(textboxes[3].Text),
                 tempo = (int)TestTimer.Stop().TotalSeconds,
-                quantidade = 10,
+                quantidade = Balancas.Sum(balanca => balanca.Count),
                 acertos = acertos / 4
             };
             
@@ -210,6 +213,8 @@ public class Level2 : IGame
             await requester.PostAsync("test",  serialized);
             sent = true;
             count++;
+            MessageBox.Show("Cabo lek", "Informações dos Inputs");
+
         }
     }
 

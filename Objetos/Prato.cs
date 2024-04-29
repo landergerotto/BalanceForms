@@ -12,6 +12,8 @@ public class Prato
     public int Peso => Objetos.Sum(obj => obj.Valor);
     public Pen Pen = Pens.Blue;
 
+    public int Count => Objetos.Count;
+
     public void Draw(Graphics g)
     {
         if (Balanca is not null)
