@@ -47,7 +47,7 @@ public class Prato
 
                 float fontsize = 12;
                 PointF center = obj.Center;
-                string text = type.Value.Count().ToString();
+                string text = type.Value.Count.ToString();
                 RectangleF textRect = ClientScreen.OnScreen(
                     center.X - (fontsize / 2) * text.Length,
                     center.Y - (fontsize / 2) * text.Length,
@@ -58,7 +58,7 @@ public class Prato
                 SolidBrush brush = new SolidBrush(Color.Black);
 
                 g.DrawString(text, font, brush, new PointF(textRect.X, textRect.Y));
-                g.DrawString(type.Value.Count.ToString(), font, brush, center.X - font.Size / 2, center.Y - font.Size / 2);
+                
                 column++;
                 if (!(column < max_column))
                 {
@@ -66,8 +66,8 @@ public class Prato
                     line++;
                 }
             }
-            g.DrawRectangleOnScreen(this.Pen,
-                RealHitbox((this.Equals(Balanca.Esquerdo) ? 1 : -1) * ((int)Balanca.Equilibrio - 2)));
+            // g.DrawRectangleOnScreen(this.Pen,
+            //     RealHitbox((this.Equals(Balanca.Esquerdo) ? 1 : -1) * ((int)Balanca.Equilibrio - 2)));
         }
     }
 

@@ -22,6 +22,7 @@ public class Tutorial : IGame
 
     public List<int> QuantidadeObjeto => QuantidadeObjeto;
 
+
     public Dictionary<Type, List<Objeto>> MesaTypes
     {
         get
@@ -81,6 +82,7 @@ public class Tutorial : IGame
         foreach (var obj in Mesa)
             obj.Move(new PointF(obj.Position.X + mesa_pos.X - x0, obj.Position.Y + mesa_pos.Y - y0));
 
+
         float rectBorder = 25;
         this.mesaRect = new RectangleF(
             new PointF(mesa_pos.X - rectBorder, mesa_pos.Y - rectBorder),
@@ -125,11 +127,22 @@ public class Tutorial : IGame
         foreach (var type in MesaTypes)
         {
             var obj = type.Value[0];
-
-            Font font = new Font("Arial", 15);
-            SolidBrush brush = new SolidBrush(Color.Black);
+            float fontsize = 15;
             PointF center = obj.Center;
-            g.DrawString((type.Value.Count - (ClientCursor.Objeto?.GetType() == obj.GetType() ? 1 : 0)).ToString(), font, brush, center.X - font.Size / 2, center.Y - font.Size / 2);
+            string text = type.Value.Count.ToString();
+            RectangleF textRect = ClientScreen.OnScreen(
+                center.X - (fontsize / 2) * text.Length,
+                center.Y - (fontsize / 2) * text.Length,
+                fontsize * text.Length, fontsize
+            );
+
+            Font font = new Font("Arial", textRect.Height);
+            SolidBrush brush = new SolidBrush(Color.Black);
+
+            g.DrawString(
+                (type.Value.Count - (ClientCursor.Objeto?.GetType() == obj.GetType() ? 1 : 0)).ToString(),
+                font, brush,
+                new PointF(textRect.X, textRect.Y));
         }
     }
     private async Task TestRequestAsync()
