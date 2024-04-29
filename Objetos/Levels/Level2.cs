@@ -16,6 +16,7 @@ public class Level2 : IGame
 
     private List<Objeto> mesa = new List<Objeto>();
     public List<Objeto> Mesa => mesa;
+    private RectangleF mesaRect;
 
     public Dictionary<Objeto, int> Formas = new();
 
@@ -49,7 +50,8 @@ public class Level2 : IGame
         var b1 = new Balanca(0, 450);
         var b2 = new Balanca(800, 450);
 
-        balancas[0] = b1; balancas[1] = b2;
+        balancas[0] = b1;
+        balancas[1] = b2;
 
         Formas[new Circulo(new PointF(0, 0), 600)] = 5;
         Formas[new Quadrado(new PointF(100, 0), 675)] = 5;
@@ -57,16 +59,42 @@ public class Level2 : IGame
         Formas[new Estrela(new PointF(300, 0), 50)] = 5;
         Formas[new Hexagono(new PointF(400, 0), 25)] = 5;
 
+        float x0 = ClientScreen.Width;
+        float x1 = 0;
+        float y0 = ClientScreen.Height;
+        float y1 = 0;
         foreach (var obj in Formas)
         {
+            Objeto _objeto = obj.Key;
+            x0 = Math.Min(x0, _objeto.X);
+            x1 = Math.Max(x1, _objeto.X + _objeto.Width);
+            y0 = Math.Min(y0, _objeto.Y);
+            y1 = Math.Max(y1, _objeto.Y + _objeto.Height);
             for (int i = 0; i < obj.Value; i++)
             {
-                Objeto objeto = obj.Key.Clone();
+                Objeto objeto = _objeto.Clone();
                 Mesa.Add(objeto);
-                ObjetosJogo.Add(objeto);
+                objetosJogo.Add(objeto);
             }
         }
+
+        SizeF mesa_size = new SizeF(x1 - x0, y1 - y0);
+        PointF mesa_pos = new PointF(
+            x0 + ClientScreen.Center.X - mesa_size.Width / 2,
+            y0 + ClientScreen.Height - mesa_size.Height - 50
+        );
+        foreach (var obj in Mesa)
+            obj.Move(
+                new PointF(obj.Position.X + mesa_pos.X - x0, obj.Position.Y + mesa_pos.Y - y0)
+            );
+
+        float rectBorder = 25;
+        this.mesaRect = new RectangleF(
+            new PointF(mesa_pos.X - rectBorder, mesa_pos.Y - rectBorder),
+            new SizeF(mesa_size.Width + rectBorder * 2, mesa_size.Height + rectBorder * 2)
+        );
     }
+
     public async void Update(Panel panel, string nome, string nasc)
     {
         if (!timerCount)
@@ -93,8 +121,18 @@ public class Level2 : IGame
 
     public void Draw(Graphics g)
     {
+
+        string texto = "Bem-vindo ao Nível 2";
+        Font fonte = new Font("Arial", 20);
+        Brush brush1 = Brushes.Black;
+        TextLevel2(g, texto, fonte, brush1, 1900);
+
         foreach (var balanca in balancas)
             balanca.Draw(g);
+
+        SolidBrush rectbrush = new SolidBrush(Color.LightGray);
+        g.FillRectangle(rectbrush, this.mesaRect.OnScreen());
+        rectbrush.Dispose();
 
         foreach (var obj in ObjectManager.Objetos)
         {
@@ -108,134 +146,140 @@ public class Level2 : IGame
             Font font = new Font("Arial", 15);
             SolidBrush brush = new SolidBrush(Color.Black);
             PointF center = obj.Center;
-            g.DrawString((type.Value.Count - ( ClientCursor.Objeto?.GetType() == obj.GetType() ? 1 : 0)).ToString(), font, brush, center.X - font.Size / 2, center.Y - font.Size / 2);
+            g.DrawString(
+                (
+                    type.Value.Count - (ClientCursor.Objeto?.GetType() == obj.GetType() ? 1 : 0)
+                ).ToString(),
+                font,
+                brush,
+                center.X - font.Size / 2,
+                center.Y - font.Size / 2
+            );
         }
     }
+
     private async Task TestRequestAsync(Panel panel, string nome, string nasc)
     {
         string a = await requester.GetAsync("test");
         var b = Json.DeserializeResponse(a);
         this.apiResponse = b.response;
 
-        if(sent)
+        if (sent)
             return;
 
         if (apiResponse == Respostas.Parou)
-        {   
+        {
             if (count > 0)
-               return;
+                return;
 
-            int ind = 0;
-            TextBox[] textboxes = new TextBox[4]; 
-            for (int i = 0; i < panel.Controls.Count; i++)
-            {
-                if (i == 1)
-                    continue;
-
-                if (panel.Controls[i] is TextBox)
-                {
-                    textboxes[ind] = (TextBox)panel.Controls[i];
-                    ind++;
-                } 
-            }
-            
-            textboxes[0].Text = textboxes[0].Text == "" ? "0" : textboxes[0].Text;
-            textboxes[1].Text = textboxes[1].Text == "" ? "0" : textboxes[1].Text;
-            textboxes[2].Text = textboxes[2].Text == "" ? "0" : textboxes[2].Text;
-            textboxes[3].Text = textboxes[3].Text == "" ? "0" : textboxes[3].Text;
-
-            float acertos = 0;
-
-            if (textboxes[0].Text == "675")
-                acertos++;
-            if (textboxes[1].Text == "600")
-                acertos++;
-            if (textboxes[2].Text == "50")
-                acertos++;    
-            if (textboxes[0].Text == "25")
-                acertos++;
-
-            this.result.prova2 = new Prova
-            {
-                triangulo = 500,
-                quadrado = int.Parse(textboxes[0].Text),
-                circulo = int.Parse(textboxes[1].Text),
-                estrela = int.Parse(textboxes[2].Text),
-                hexagono = int.Parse(textboxes[3].Text),
-                tempo = (int)TestTimer.Stop().TotalSeconds,
-                quantidade = Balancas.Sum(balanca => balanca.Count),
-                acertos = acertos / 4
-            };
-            
-            var serialized = Json.SerializeToJson(this.result);
-            await requester.PostAsync("test",  serialized);
+            var serialized = Json.SerializeToJson(BuildJson(panel, nome, nasc));
+            await requester.PostAsync("test", serialized);
             count++;
         }
     }
-  
+
     public async void Enviar(Panel panel, string nome, string nasc, Form form)
     {
         if (apiResponse == Respostas.Comecado)
         {
-            if(sent)
+            if (sent)
                 return;
 
             if (count > 0)
-               return;
+                return;
 
-            int ind = 0;
-            TextBox[] textboxes = new TextBox[4]; 
-
-            for (int i = 0; i < panel.Controls.Count; i++)
+            ConfirmationForm confirmationForm = new ConfirmationForm(
+                "Você confirma o envio? Isso fará a prova ser finalizada."
+            );
+            DialogResult result = confirmationForm.ShowDialog();
+            if (result == DialogResult.Yes)
             {
-                if (i == 1)
-                    continue;
-
-                if (panel.Controls[i] is TextBox)
-                {
-                    textboxes[ind] = (TextBox)panel.Controls[i];
-                    ind++;
-                }
+                var serialized = Json.SerializeToJson(BuildJson(panel, nome, nasc));
+                MessageBox.Show("Você finalizou os desafios. Parabéns!", "Parabéns!");
+                await requester.PostAsync("test", serialized);
+                sent = true;
+                count++;
+                MessageBox.Show("Chame um instrutor para fechar a prova. ou caso algo dê errado.");
+                CloseForm cf = new CloseForm(form);
+                cf.Show();
             }
-
-            textboxes[0].Text = textboxes[0].Text == "" ? "0" : textboxes[0].Text;
-            textboxes[1].Text = textboxes[1].Text == "" ? "0" : textboxes[1].Text;
-            textboxes[2].Text = textboxes[2].Text == "" ? "0" : textboxes[2].Text;
-            textboxes[3].Text = textboxes[3].Text == "" ? "0" : textboxes[3].Text;
-
-            float acertos = 0;
-
-            if (textboxes[0].Text == "675")
-                acertos++;
-            if (textboxes[1].Text == "600")
-                acertos++;
-            if (textboxes[2].Text == "50")
-                acertos++;    
-            if (textboxes[3].Text == "25")
-                acertos++;
-
-            this.result.prova2 = new Prova
+            else
             {
-                triangulo = 500,
-                quadrado = int.Parse(textboxes[0].Text),
-                circulo = int.Parse(textboxes[1].Text),
-                estrela = int.Parse(textboxes[2].Text),
-                hexagono = int.Parse(textboxes[3].Text),
-                tempo = (int)TestTimer.Stop().TotalSeconds,
-                quantidade = Balancas.Sum(balanca => balanca.Count),
-                acertos = acertos / 4
-            };
-            
-            var serialized = Json.SerializeToJson(this.result);
-            MessageBox.Show("Resposta Enviada!");
-            await requester.PostAsync("test",  serialized);
-            sent = true;
-            count++;
-            MessageBox.Show("Você finalizou os desafios. Parabéns!", "Parabéns!");
-            CloseForm cf = new CloseForm(form);
-            cf.Show();
-
+                MessageBox.Show(
+                    "Você está no nível desafio. Tome cuidado para não usar peças demais.",
+                    "Informação"
+                );
+                return;
+            }
         }
     }
 
+    private TestResult BuildJson(Panel panel, string nome, string nasc)
+    {
+        int ind = 0;
+        TextBox[] textboxes = new TextBox[4];
+
+        for (int i = 0; i < panel.Controls.Count; i++)
+        {
+            if (i == 1)
+                continue;
+
+            if (panel.Controls[i] is TextBox)
+            {
+                textboxes[ind] = (TextBox)panel.Controls[i];
+                ind++;
+            }
+        }
+
+        textboxes[0].Text = textboxes[0].Text == "" ? "0" : textboxes[0].Text;
+        textboxes[1].Text = textboxes[1].Text == "" ? "0" : textboxes[1].Text;
+        textboxes[2].Text = textboxes[2].Text == "" ? "0" : textboxes[2].Text;
+        textboxes[3].Text = textboxes[3].Text == "" ? "0" : textboxes[3].Text;
+
+        float acertos = 0;
+
+        if (textboxes[0].Text == "675")
+            acertos++;
+        if (textboxes[1].Text == "600")
+            acertos++;
+        if (textboxes[2].Text == "50")
+            acertos++;
+        if (textboxes[3].Text == "25")
+            acertos++;
+
+        this.result.prova2 = new Prova
+        {
+            triangulo = 500,
+            quadrado = int.Parse(textboxes[0].Text),
+            circulo = int.Parse(textboxes[1].Text),
+            estrela = int.Parse(textboxes[2].Text),
+            hexagono = int.Parse(textboxes[3].Text),
+            tempo = (int)TestTimer.Stop().TotalSeconds,
+            quantidade = Balancas.Sum(balanca => balanca.Count),
+            acertos = acertos / 4
+        };
+
+        return this.result;
+    }
+
+     public void TextLevel2(Graphics g, string texto, Font fonte, Brush brush, int larguraTela)
+    {
+        SizeF tamanhoTexto = g.MeasureString(texto, fonte);
+        float x = (larguraTela - tamanhoTexto.Width) / 2;
+        float y = 20;
+        g.DrawString(texto, fonte, brush, x, y);
+
+        float xExplicacoes = x - 400;
+        float yComentario = y + tamanhoTexto.Height + 10;
+
+        string textoComentario = "1- Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso das outras figuras colocando nas balanças.";
+        string importante = "Importante: Quando a figura é colocada na balança, você não consegue removê-la.";
+
+        Font fonteComentario = new Font("Arial", 12);
+        Brush brushComentario = Brushes.Black;
+
+
+        g.DrawString(textoComentario, fonteComentario, brushComentario, xExplicacoes, yComentario);
+        g.DrawString(importante, fonteComentario, brushComentario, xExplicacoes, yComentario + fonteComentario.Height + 5);
+    }
 }

@@ -2,16 +2,14 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-public class CloseForm : Form
+public class TelaInicialForm : Form
 {
     private TextBox input1;
     private TextBox input2;
     private Button startButton;
-    public Form ParentFormToClose { get; set; }
 
-    public CloseForm(Form parentFormToClose)
+    public TelaInicialForm()
     {
-        this.ParentFormToClose = parentFormToClose;
         Text = "Tela Inicial";
         Size = new Size(500, 250);
         FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -19,24 +17,21 @@ public class CloseForm : Form
         BackColor = Color.LightGray;
 
         Label label1 = new Label { Text = "Nome Completo:", AutoSize = true };
-
-        input1 = new TextBox();
-        input1.Width = 250;
+        input1 = new TextBox { Width = 250, PlaceholderText = "Seu Nome" };
 
         Label label2 = new Label { Text = "Data de Nascimento:", AutoSize = true };
-
-        input2 = new TextBox();
-        input2.Width = 250;
+        input2 = new TextBox { Width = 250, PlaceholderText = "dd/mm/yyyy" };
+        input2.Validating += new System.ComponentModel.CancelEventHandler(Input2_Validating);
 
         startButton = new Button
         {
             Text = "Iniciar",
-            Location = new Point(200, y: 150),
+            Location = new Point(200, 150),
             Size = new Size(80, 30)
         };
         startButton.Click += StartButton_Click;
 
-        // Calcula as posições para centralizar os inputs
+        // Calculate positions to center the inputs
         int labelWidth = Math.Max(label1.Width, label2.Width);
         int inputWidth = 340;
         int startX = (ClientSize.Width - labelWidth - inputWidth - 20) / 2;
@@ -55,8 +50,6 @@ public class CloseForm : Form
 
     private void StartButton_Click(object sender, EventArgs e)
     {
-        // Aqui você pode adicionar lógica para o que acontece quando o botão "Start" é clicado
-        // Por exemplo, você pode fechar esta janela e iniciar o jogo
         string input1Text = input1.Text;
         string input2Text = input2.Text;
 
@@ -66,17 +59,18 @@ public class CloseForm : Form
             return; // Stop further execution if validation fails
         }
 
-        string validUsername = "admin";
-        string validPassword = "password";
+        this.Hide(); // Hide the initial screen
+        MainForm mainForm = new MainForm(input1Text, input2Text); // Create an instance of the main form of the game
+        mainForm.ShowDialog(); // Show the main form of the game
+        this.Close(); // Close the initial screen when the main game form is closed
+    }
 
-        if (input1Text == validUsername && input2Text == validPassword)
+    private void Input2_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        if (!DateTime.TryParse(input2.Text, out _))
         {
-            this.ParentFormToClose?.Close(); // Close the parent form
-            this.Close(); // Close the login form
-        }
-        else
-        {
-            MessageBox.Show("Invalid username or password");
+            MessageBox.Show("Please enter a valid date in the format dd/mm/yyyy.");
+            e.Cancel = true; // Prevents focus from being lost if validation fails
         }
     }
 }
