@@ -60,7 +60,7 @@ public partial class MainForm : Form
 
         // Adiciona o painel para os inputs acima da PictureBox
         float width = 250;
-        float height = 180;
+        float height = 210;
         RectangleF inputPanelRect = ClientScreen.OnScreen(ClientScreen.Width - width, ClientScreen.Height / 2 - height / 2, width, height);
         inputPanel = new Panel
         {
@@ -70,7 +70,7 @@ public partial class MainForm : Form
         };
 
         // Adiciona os inputs e labels ao painel
-        string[] shapes = new string[] { "⬜", "🟠", "★", "⬣" }; // Square, Circle, Star, Hexagon in Unicode
+        string[] shapes = new string[] {"▲", "■", "🟠", "★", "⬣" }; // Square, Circle, Star, Hexagon in Unicode
         float fontsize = 10 * Screen.PrimaryScreen.Bounds.Height / ClientScreen.Height;
         Font font = new Font("Arial", fontsize, FontStyle.Regular);
         SizeF maxLabelSize = Utils.MeasureText(shapes, font);
@@ -88,6 +88,8 @@ public partial class MainForm : Form
             TextBox textBox = new TextBox
             {
                 Font = font,
+                Text = i == 0 ? "500" : "",
+                ReadOnly = i == 0,
                 Size = new Size((int)((inputPanel.Width - maxLabelSize.Width - fontsize) * 0.8), 0),
                 Location = new Point((int)(label.Location.X + maxLabelSize.Width + fontsize), label.Top)
             };

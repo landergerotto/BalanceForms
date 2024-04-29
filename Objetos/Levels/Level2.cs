@@ -127,13 +127,16 @@ public class Level2 : IGame
 
             int ind = 0;
             TextBox[] textboxes = new TextBox[4]; 
-            foreach (Control control in panel.Controls)
+            for (int i = 0; i < panel.Controls.Count; i++)
             {
-                if (control is TextBox)
+                if (i == 1)
+                    continue;
+
+                if (panel.Controls[i] is TextBox)
                 {
-                    textboxes[ind] = (TextBox)control;
+                    textboxes[ind] = (TextBox)panel.Controls[i];
                     ind++;
-                }
+                } 
             }
 
             float acertos = 0;
@@ -177,11 +180,15 @@ public class Level2 : IGame
 
             int ind = 0;
             TextBox[] textboxes = new TextBox[4]; 
-            foreach (Control control in panel.Controls)
+
+            for (int i = 0; i < panel.Controls.Count; i++)
             {
-                if (control is TextBox)
+                if (i == 1)
+                    continue;
+
+                if (panel.Controls[i] is TextBox)
                 {
-                    textboxes[ind] = (TextBox)control;
+                    textboxes[ind] = (TextBox)panel.Controls[i];
                     ind++;
                 }
             }
@@ -194,7 +201,7 @@ public class Level2 : IGame
                 acertos++;
             if (textboxes[2].Text == "50")
                 acertos++;    
-            if (textboxes[0].Text == "25")
+            if (textboxes[3].Text == "25")
                 acertos++;
 
             this.result.prova2 = new Prova
@@ -210,10 +217,11 @@ public class Level2 : IGame
             };
             
             var serialized = Json.SerializeToJson(this.result);
+            MessageBox.Show("Resposta Enviada!");
             await requester.PostAsync("test",  serialized);
             sent = true;
             count++;
-            MessageBox.Show("Cabo lek", "Informações dos Inputs");
+            MessageBox.Show("Você finalizou os desafios. Parabéns!", "Parabéns!");
 
         }
     }

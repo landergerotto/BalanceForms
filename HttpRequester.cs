@@ -45,6 +45,7 @@ public class HttpRequester
         }
         catch (Exception ex)
         {
+            MessageBox.Show("Algo deu errado ao enviar a resposta.");
             return $"Error: {ex.Message}";
         }
     }

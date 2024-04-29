@@ -38,11 +38,13 @@ public class GameEngine
     {
         index++;
         JogoAtual.result = result;
-        foreach (Control control in panel.Controls)
+        for (int i = 0; i < panel.Controls.Count; i++)
         {
-            if (control is TextBox)
-                ((TextBox)control).Text = "";
-
+            if (panel.Controls[i] is TextBox && i != 1)
+            {
+                // MessageBox.Show(i.ToString());
+                ((TextBox)panel.Controls[i]).Text = "";
+            }
         }
     }
     public void Update(Panel panel, string nome, string nasc)

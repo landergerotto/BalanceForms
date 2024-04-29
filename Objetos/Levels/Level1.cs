@@ -21,7 +21,7 @@ public class Level1 : IGame
 
     public List<int> QuantidadeObjeto => QuantidadeObjeto;
     private int count = 0;
-    
+
     public Dictionary<Type, List<Objeto>> MesaTypes
     {
         get
@@ -49,7 +49,8 @@ public class Level1 : IGame
         var b1 = new Balanca(0, 450);
         var b2 = new Balanca(800, 450);
 
-        balancas[0] = b1; balancas[1] = b2;
+        balancas[0] = b1;
+        balancas[1] = b2;
 
         Formas[new Circulo(new PointF(0, 0), 750)] = 5;
         Formas[new Quadrado(new PointF(100, 0), 1000)] = 5;
@@ -67,6 +68,7 @@ public class Level1 : IGame
             }
         }
     }
+
     public async void Update(Panel panel, string nome, string nasc)
     {
         if (!timerCount)
@@ -108,9 +110,18 @@ public class Level1 : IGame
             Font font = new Font("Arial", 15);
             SolidBrush brush = new SolidBrush(Color.Black);
             PointF center = obj.Center;
-            g.DrawString((type.Value.Count - ( ClientCursor.Objeto?.GetType() == obj.GetType() ? 1 : 0)).ToString(), font, brush, center.X - font.Size / 2, center.Y - font.Size / 2);
+            g.DrawString(
+                (
+                    type.Value.Count - (ClientCursor.Objeto?.GetType() == obj.GetType() ? 1 : 0)
+                ).ToString(),
+                font,
+                brush,
+                center.X - font.Size / 2,
+                center.Y - font.Size / 2
+            );
         }
     }
+
     private async Task TestRequestAsync(Panel panel, string nome, string nasc)
     {
         string a = await requester.GetAsync("test");
@@ -118,19 +129,24 @@ public class Level1 : IGame
         this.apiResponse = b.response;
 
         if (apiResponse == Respostas.Parou)
-        {   
+        {
             if (count > 0)
-               return;
+                return;
 
             int ind = 0;
-            TextBox[] textboxes = new TextBox[4]; 
-            foreach (Control control in panel.Controls)
+            TextBox[] textboxes = new TextBox[4];
+
+            for (int i = 0; i < panel.Controls.Count; i++)
             {
-                if (control is TextBox)
+                if (i == 1)
+                    continue;
+
+                if (panel.Controls[i] is TextBox)
                 {
-                    textboxes[ind] = (TextBox)control;
+                    textboxes[ind] = (TextBox)panel.Controls[i];
                     ind++;
                 }
+                
             }
             float acertos = 0;
 
@@ -139,15 +155,16 @@ public class Level1 : IGame
             if (textboxes[1].Text == "750")
                 acertos++;
             if (textboxes[2].Text == "200")
-                acertos++;    
+                acertos++;
             if (textboxes[0].Text == "100")
                 acertos++;
 
-            var json = new TestResult 
+            var json = new TestResult
             {
                 nome = nome,
                 nascimento = nasc,
-                prova1 = new Prova {
+                prova1 = new Prova
+                {
                     triangulo = 500,
                     quadrado = int.Parse(textboxes[0].Text),
                     circulo = int.Parse(textboxes[1].Text),
@@ -157,31 +174,36 @@ public class Level1 : IGame
                     quantidade = Balancas.Sum(balanca => balanca.Count),
                     acertos = acertos / 4
                 },
-                prova2 = new Prova{ },
-                
+                prova2 = new Prova { },
             };
             this.result = json;
 
             var serialized = Json.SerializeToJson(json);
-            await requester.PostAsync("test",  serialized);
+            await requester.PostAsync("test", serialized);
             count++;
         }
     }
-  
+
     public void Enviar(Panel panel, string nome, string nasc)
     {
         if (apiResponse == Respostas.Comecado)
         {
             int ind = 0;
-            TextBox[] textboxes = new TextBox[4]; 
-            foreach (Control control in panel.Controls)
+            TextBox[] textboxes = new TextBox[4];
+
+            for (int i = 0; i < panel.Controls.Count; i++)
             {
-                if (control is TextBox)
+                if (i == 1)
+                    continue;
+
+                if (panel.Controls[i] is TextBox)
                 {
-                    textboxes[ind] = (TextBox)control;
+                    textboxes[ind] = (TextBox)panel.Controls[i];
                     ind++;
                 }
+                
             }
+
             float acertos = 0;
 
             if (textboxes[0].Text == "1000")
@@ -189,15 +211,16 @@ public class Level1 : IGame
             if (textboxes[1].Text == "750")
                 acertos++;
             if (textboxes[2].Text == "200")
-                acertos++;    
-            if (textboxes[0].Text == "100")
+                acertos++;
+            if (textboxes[3].Text == "100")
                 acertos++;
 
-            var json = new TestResult 
+            var json = new TestResult
             {
                 nome = nome,
                 nascimento = nasc,
-                prova1 = new Prova {
+                prova1 = new Prova
+                {
                     triangulo = 500,
                     quadrado = int.Parse(textboxes[0].Text),
                     circulo = int.Parse(textboxes[1].Text),
@@ -207,14 +230,15 @@ public class Level1 : IGame
                     quantidade = Balancas.Sum(balanca => balanca.Count),
                     acertos = acertos / 4
                 },
-                prova2 = new Prova{ },
-                
+                prova2 = new Prova { },
             };
             this.result = json;
 
-            MessageBox.Show("O teste de verdade começa agora. Você está no nível desfaio", "Informações dos Inputs");
+            MessageBox.Show(
+                "O teste de verdade começa agora. Você está no nível desfaio",
+                "Informações dos Inputs"
+            );
             GameEngine.Current.ChangeLevel(panel, this.result);
         }
     }
-
 }
