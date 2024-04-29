@@ -20,7 +20,6 @@ answers_format_correct = None
 answers_format_wrong = None
 worksheets = None
 correct_answers = None
-crr = 0
 
 def createWorkbook():
     global answer_row
@@ -42,7 +41,7 @@ def createWorkbook():
     date = current_date.strftime('%d-%m-%Y')
     period = 'Manhã' if current_date < midday else 'Tarde'
 
-    if not os.path.exists('../Provas'):
+    if not os.path.exists('../Provas'): 
         os.mkdir('../Provas')
 
     if not os.path.exists(f'../Provas/{date}'):
@@ -85,7 +84,7 @@ def createWorkbook():
     })
 
     worksheets = [worksheet1, worksheet2]
-    correct_answers = [[500, 1000, 750, 200, 100], [500, 1000, 750, 200, 100]]
+    correct_answers = [[500, 1000, 750, 200, 100], [500, 675, 600, 50, 25]]
     for index, worksheet in enumerate(worksheets):
         first_line = ['Nome', 'Data de nascimento', 'Triângulo', 'Quadrado', 'Círculo', 'Estrela', 'Hexágono', 'Tempo de prova', 'Quantidade de peças utilizadas', '% de acertos']
         for i in range(len(first_line)):
