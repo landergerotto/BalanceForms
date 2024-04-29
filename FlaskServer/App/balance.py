@@ -34,7 +34,7 @@ def createWorkbook():
     global crr
     
     answer_row = 2
-    workbook = xl.Workbook('Resultados.xlsx')
+    workbook = xl.Workbook('../Resultados.xlsx')
     worksheet1 = workbook.add_worksheet('Prova1')
     worksheet2 = workbook.add_worksheet('Prova2')
 
@@ -88,6 +88,13 @@ def createWorkbook():
             worksheet.merge_range(0, i, 1, i, first_line[i], head_format)
         crr = 0
 
+def time_formatter(time):
+    hours = int(time) // 3600
+    minutes = (int(time) % 3600) // 60
+    seconds = int(time) % 60
+    time = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+    return time
+
 @bp.route('/', methods=['GET', 'POST'])
 def index():
     global test_started
@@ -131,22 +138,19 @@ def test_status():
         user_data = request.json
         global crr, answer_row, correct_answers
 
-        answers = [list(user_data['prova1'].values()), list(user_data['prova2'].values())]
-
-        time = user_data['tempo']
-        hours = int(time) // 3600
-        minutes = (int(time) % 3600) // 60
-        seconds = int(time) % 60
-        time = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+        tests = [list(user_data['prova1'].values()), list(user_data['prova2'].values())]
+        
+        tests[0][5] = time_formatter(tests[0][5])
+        tests[1][5] = time_formatter(tests[1][5])
 
         for index, worksheet in enumerate(worksheets):
             worksheet.write(answer_row, 0, user_data['nome'], user_format)
             worksheet.write(answer_row, 1, user_data['nascimento'], user_format)
-            worksheet.write(answer_row, 7, time, user_format)
-            worksheet.write(answer_row, 8, user_data['quantidade'], user_format)
-            worksheet.write(answer_row, 9, user_data['acertos'], percentage_format)
+            worksheet.write(answer_row, 7, tests[index][5], user_format)
+            worksheet.write(answer_row, 8, tests[index][6], user_format)
+            worksheet.write(answer_row, 9, tests[index][7], percentage_format)
             for i in range(2, 7):
-                worksheet.write(answer_row, i, answers[index][crr], answers_format_correct if answers[index][crr] == correct_answers[index][crr] else answers_format_wrong)
+                worksheet.write(answer_row, i, tests[index][crr], answers_format_correct if tests[index][crr] == correct_answers[index][crr] else answers_format_wrong)
                 crr += 1
             crr = 0
         answer_row += 1

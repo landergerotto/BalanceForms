@@ -1,21 +1,24 @@
 {
-    "nome": "Teste",
-    "nascimento": "24/04/2004",
-    "prova1": { 
-      "triangulo": 0,
-      "quadrado": 0,
-      "circulo": 0,
-      "estrela": 0,
-      "hexagono": 0
-    },
-    "prova2": { 
-      "triangulo": 0,
-      "quadrado": 0,
-      "circulo": 0,
-      "estrela": 0,
-      "hexagono": 0
-    },
-    "tempo": 0,
-    "quantidade": 0,
+  "nome": "Test",
+  "nascimento": "10/05/2005",
+  "prova1": { 
+    "triangulo": 500,
+    "quadrado": 1000,
+    "circulo": 987,
+    "estrela": 654,
+    "hexagono": 123,
+    "tempo": 1500,
+    "quantidade": 15,
     "acertos": 0.4
+  },
+  "prova2": {
+    "triangulo": 500,
+    "quadrado": 1500,
+    "circulo": 750,
+    "estrela": 200,
+    "hexagono": 100,
+    "tempo": 2000,
+    "quantidade": 10,
+    "acertos": 0.8
+  }
 }
