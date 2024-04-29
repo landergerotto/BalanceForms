@@ -42,6 +42,8 @@ public class Level2 : IGame
     public TestResult result { get; set; }
     private HttpRequester requester = new("http://127.0.0.1:5000/");
     private Respostas apiResponse;
+    private bool timerCount = false;
+
     public Level2()
     {
         var b1 = new Balanca(0, 450);
@@ -67,6 +69,11 @@ public class Level2 : IGame
     }
     public async void Update(Panel panel, string nome, string nasc)
     {
+        if (!timerCount)
+        {
+            TestTimer.Start();
+            timerCount = true;
+        }
         await TestRequestAsync(panel, nome, nasc);
         foreach (var balanca in balancas)
         {
@@ -126,12 +133,26 @@ public class Level2 : IGame
                 }
             }
 
+            float acertos = 0;
+
+            if (textboxes[0].Text == "675")
+                acertos++;
+            if (textboxes[1].Text == "600")
+                acertos++;
+            if (textboxes[2].Text == "50")
+                acertos++;    
+            if (textboxes[0].Text == "25")
+                acertos++;
+
             this.result.prova2 = new Prova
             {
                 quadrado = int.Parse(textboxes[0].Text),
                 circulo = int.Parse(textboxes[1].Text),
                 estrela = int.Parse(textboxes[2].Text),
                 hexagono = int.Parse(textboxes[3].Text),
+                tempo = (int)TestTimer.Stop().TotalSeconds,
+                quantidade = 10,
+                acertos = acertos / 4
             };
             
             var serialized = Json.SerializeToJson(this.result);
@@ -158,12 +179,26 @@ public class Level2 : IGame
                 }
             }
 
+            float acertos = 0;
+
+            if (textboxes[0].Text == "675")
+                acertos++;
+            if (textboxes[1].Text == "600")
+                acertos++;
+            if (textboxes[2].Text == "50")
+                acertos++;    
+            if (textboxes[0].Text == "25")
+                acertos++;
+
             this.result.prova2 = new Prova
             {
                 quadrado = int.Parse(textboxes[0].Text),
                 circulo = int.Parse(textboxes[1].Text),
                 estrela = int.Parse(textboxes[2].Text),
                 hexagono = int.Parse(textboxes[3].Text),
+                tempo = (int)TestTimer.Stop().TotalSeconds,
+                quantidade = 10,
+                acertos = acertos / 4
             };
             
             var serialized = Json.SerializeToJson(this.result);

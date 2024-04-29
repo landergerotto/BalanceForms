@@ -42,6 +42,8 @@ public class Level1 : IGame
     public TestResult result { get; set; }
     private HttpRequester requester = new("http://127.0.0.1:5000/");
     private Respostas apiResponse;
+    private bool timerCount = false;
+
     public Level1()
     {
         var b1 = new Balanca(0, 450);
@@ -67,6 +69,11 @@ public class Level1 : IGame
     }
     public async void Update(Panel panel, string nome, string nasc)
     {
+        if (!timerCount)
+        {
+            TestTimer.Start();
+            timerCount = true;
+        }
         await TestRequestAsync(panel, nome, nasc);
         foreach (var balanca in balancas)
         {
@@ -125,6 +132,16 @@ public class Level1 : IGame
                     ind++;
                 }
             }
+            float acertos = 0;
+
+            if (textboxes[0].Text == "1000")
+                acertos++;
+            if (textboxes[1].Text == "750")
+                acertos++;
+            if (textboxes[2].Text == "200")
+                acertos++;    
+            if (textboxes[0].Text == "100")
+                acertos++;
 
             var json = new TestResult 
             {
@@ -136,11 +153,12 @@ public class Level1 : IGame
                     circulo = int.Parse(textboxes[1].Text),
                     estrela = int.Parse(textboxes[2].Text),
                     hexagono = int.Parse(textboxes[3].Text),
+                    tempo = (int)TestTimer.Stop().TotalSeconds,
+                    quantidade = 0,
+                    acertos = acertos / 4
                 },
                 prova2 = new Prova{ },
-                tempo = 2600,
-                quantidade = 0,
-                acertos = 0.4
+                
             };
             this.result = json;
 
@@ -164,6 +182,16 @@ public class Level1 : IGame
                     ind++;
                 }
             }
+            float acertos = 0;
+
+            if (textboxes[0].Text == "1000")
+                acertos++;
+            if (textboxes[1].Text == "750")
+                acertos++;
+            if (textboxes[2].Text == "200")
+                acertos++;    
+            if (textboxes[0].Text == "100")
+                acertos++;
 
             var json = new TestResult 
             {
@@ -175,13 +203,15 @@ public class Level1 : IGame
                     circulo = int.Parse(textboxes[1].Text),
                     estrela = int.Parse(textboxes[2].Text),
                     hexagono = int.Parse(textboxes[3].Text),
+                    tempo = (int)TestTimer.Stop().TotalSeconds,
+                    quantidade = 0,
+                    acertos = acertos / 4
                 },
                 prova2 = new Prova{ },
-                tempo = 2600,
-                quantidade = 0,
-                acertos = 0.4
+                
             };
             this.result = json;
+
             GameEngine.Current.ChangeLevel(panel, this.result);
         }
     }

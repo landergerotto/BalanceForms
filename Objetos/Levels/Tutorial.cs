@@ -114,7 +114,7 @@ public class Tutorial : IGame
 
     public void Enviar(Panel panel, string nome, string nasc)
     {
-        MessageBox.Show(apiResponse.ToString(), "Informações dos Inputs");
+        // MessageBox.Show(apiResponse.ToString(), "Informações dos Inputs");
         if (apiResponse != Respostas.Comecado)
         {
             string info = "";
@@ -138,7 +138,7 @@ public class Tutorial : IGame
 
         if (apiResponse == Respostas.Comecado)
         {
-            MessageBox.Show("era teste kk", "Informações dos Inputs");
+            MessageBox.Show("Era o Tutorial KK", "Informações dos Inputs");
             GameEngine.Current.ChangeLevel(panel, result);
         }
     }
