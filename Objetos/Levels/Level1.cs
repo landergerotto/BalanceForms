@@ -82,7 +82,7 @@ public class Level1 : IGame
         PointF mesa_pos = new PointF(x0 + ClientScreen.Center.X - mesa_size.Width / 2, y0 + ClientScreen.Height - mesa_size.Height - 50);
         foreach (var obj in Mesa)
             obj.Move(new PointF(obj.Position.X + mesa_pos.X - x0, obj.Position.Y + mesa_pos.Y - y0));
-        
+
         float rectBorder = 25;
         this.mesaRect = new RectangleF(
             new PointF(mesa_pos.X - rectBorder, mesa_pos.Y - rectBorder),
@@ -116,13 +116,19 @@ public class Level1 : IGame
 
     public void Draw(Graphics g)
     {
+
+        string texto = "Bem-vindo ao Nível 1";
+        Font fonte = new Font("Arial", 20);
+        Brush brush1 = Brushes.Black;
+        TextLevel1(g, texto, fonte, brush1, 1900);
+
         foreach (var balanca in balancas)
             balanca.Draw(g);
 
         SolidBrush rectbrush = new SolidBrush(Color.LightGray);
         g.FillRectangle(rectbrush, this.mesaRect.OnScreen());
         rectbrush.Dispose();
-        
+
         foreach (var obj in ObjectManager.Objetos)
         {
             obj.Draw(g);
@@ -172,10 +178,7 @@ public class Level1 : IGame
         {
             this.result = BuildJson(panel, nome, nasc);
 
-            MessageBox.Show(
-                "O teste de verdade começa agora. Você está no nível desfaio",
-                "Informações dos Inputs"
-            );
+            MessageBox.Show("Você completou o nivel 1.", "Aviso");
             GameEngine.Current.ChangeLevel(panel, this.result);
         }
     }
@@ -232,5 +235,26 @@ public class Level1 : IGame
         };
 
         return json;
+    }
+
+    public void TextLevel1(Graphics g, string texto, Font fonte, Brush brush, int larguraTela)
+    {
+        SizeF tamanhoTexto = g.MeasureString(texto, fonte);
+        float x = (larguraTela - tamanhoTexto.Width) / 2;
+        float y = 20;
+        g.DrawString(texto, fonte, brush, x, y);
+
+        float xExplicacoes = x - 400;
+        float yComentario = y + tamanhoTexto.Height + 10;
+
+        string textoComentario = "1- Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso das outras figuras colocando nas balanças.";
+        string importante = "Importante: Quando a figura é colocada na balança, você não consegue removê-la.";
+
+        Font fonteComentario = new Font("Arial", 12);
+        Brush brushComentario = Brushes.Black;
+
+
+        g.DrawString(textoComentario, fonteComentario, brushComentario, xExplicacoes, yComentario);
+        g.DrawString(importante, fonteComentario, brushComentario, xExplicacoes, yComentario + fonteComentario.Height + 5);
     }
 }
