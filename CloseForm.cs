@@ -11,6 +11,7 @@ public class CloseForm : Form
 
     public CloseForm(Form parentFormToClose)
     {
+        this.ParentFormToClose = parentFormToClose;
         Text = "Tela Inicial";
         Size = new Size(500, 250);
         FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -77,15 +78,5 @@ public class CloseForm : Form
         {
             MessageBox.Show("Invalid username or password");
         }
-
-        this.Hide(); // Esconde a tela inicial
-        MainForm mainForm = new MainForm(input1Text, input2Text); // Cria a instância do formulário principal do jogo
-        mainForm.ShowDialog(); // Mostra o formulário principal do jogo
-        this.Close(); // Fecha a tela inicial quando o formulário principal do jogo é fechado
     }
-}
-
-public partial class MainForm : Form
-{
-    // O código original da MainForm que você forneceu permanece o mesmo
 }

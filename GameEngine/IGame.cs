@@ -11,5 +11,5 @@ public interface IGame
     TestResult result { get; set;}
     void Update(Panel panel, string nome, string nasc);
     void Draw(Graphics g);
-    void Enviar(Panel panel, string nome, string nasc);
+    void Enviar(Panel panel, string nome, string nasc, Form form);
 }

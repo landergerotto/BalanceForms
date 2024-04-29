@@ -112,7 +112,7 @@ public class Tutorial : IGame
         this.apiResponse = b.response;
     }
 
-    public void Enviar(Panel panel, string nome, string nasc)
+    public void Enviar(Panel panel, string nome, string nasc, Form form)
     {
         // MessageBox.Show(apiResponse.ToString(), "Informações dos Inputs");
         if (apiResponse != Respostas.Comecado)
