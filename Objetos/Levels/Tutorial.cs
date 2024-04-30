@@ -109,10 +109,19 @@ public class Tutorial : IGame
     public void Draw(Graphics g)
     {
 
-        string texto = "Bem-vindo ao Tutorial";
+        string titulo = "Bem-vindo ao Tutorial";
         Font fonte = new Font("Arial", 20);
         Brush brush1 = Brushes.Black;
-        TextIntroducao(g, texto, fonte, brush1, 1900);
+        g.DrawText(titulo, (ClientScreen.Width - g.MeasureString(titulo, fonte).Width) / 2, 20, fonte, brush1);
+
+        fonte = new Font("Arial", 12);
+        string comentario = "Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso \ndas outras figuras colocando nas balanças. Duas figuras tem o peso menor de 500 e duas maior de 500.";
+        string importante = "Importante: Quando a figura é colocada na balança, você não consegue removê-la.";
+        string aviso = "Aviso: Esta é uma fase de teste para você entender o funcionamento. Coloque os valores e envie para passar para a próxima fase.";
+
+        g.DrawText(comentario, (ClientScreen.Width - g.MeasureString(comentario, fonte).Width) / 2, 100, fonte, brush1);
+        g.DrawText(importante, (ClientScreen.Width - g.MeasureString(importante, fonte).Width) / 2, 150, fonte, brush1);
+        g.DrawText(aviso, (ClientScreen.Width - g.MeasureString(aviso, fonte).Width) / 2, 200, fonte, Brushes.Red);
 
         foreach (var balanca in balancas)
             balanca.Draw(g);
@@ -154,23 +163,20 @@ public class Tutorial : IGame
 
     public void Enviar(Panel panel, string nome, string nasc, Form form)
     {
-        // MessageBox.Show(apiResponse.ToString(), "Informações dos Inputs");
         if (apiResponse != Respostas.Comecado)
         {
             string info = "";
-            int valor = 200;
+            int index = 0;
+            int[] valores = {500, 300, 400, 600, 700};
             foreach (Control control in panel.Controls)
             {
-                if (valor == 500)
-                    valor += 100;
-
                 if (control is TextBox)
                 {
                     var text = ((TextBox)control).Text;
                     if (text is "")
                         text = "0";
-                    info += text + " - " + valor.ToString() + "\n";
-                    valor += 100;
+                    info += text + " - " + valores[index].ToString() + "\n";
+                    index++;
                 }
             }
             MessageBox.Show(info, "Informações dos Inputs");
@@ -181,27 +187,5 @@ public class Tutorial : IGame
             MessageBox.Show("O desafio de verdade começa agora.", "Aviso");
             GameEngine.Current.ChangeLevel(panel, result);
         }
-    }
-    public void TextIntroducao(Graphics g, string texto, Font fonte, Brush brush, int larguraTela)
-    {
-        SizeF tamanhoTexto = g.MeasureString(texto, fonte);
-        float x = (larguraTela - tamanhoTexto.Width) / 2;
-        float y = 20;
-        g.DrawString(texto, fonte, brush, x, y);
-
-        float xExplicacoes = x - 400;
-        float yComentario = y + tamanhoTexto.Height + 10;
-
-        string textoComentario = "1- Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso das outras figuras colocando nas balanças.";
-        string importante = "Importante: Quando a figura é colocada na balança, você não consegue removê-la.";
-        string aviso = "Aviso: Esta é uma fase de teste para você entender o funcionamento. Coloque os valores e envie para passar para a próxima fase.";
-
-        Font fonteComentario = new Font("Arial", 12);
-        Brush brushComentario = Brushes.Black;
-        Brush brushAviso = Brushes.Red;
-
-        g.DrawString(textoComentario, fonteComentario, brushComentario, xExplicacoes, yComentario);
-        g.DrawString(importante, fonteComentario, brushComentario, xExplicacoes, yComentario + fonteComentario.Height + 5);
-        g.DrawString(aviso, fonteComentario, brushAviso, xExplicacoes, yComentario + fonteComentario.Height + 28);
     }
 }

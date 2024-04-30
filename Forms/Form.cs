@@ -57,6 +57,8 @@ public partial class MainForm : Form
         Controls.Add(navBarPictureBox);
 
         Text = "Teixto";
+        Color boschBlue = Color.FromArgb(0, 82, 155);
+        Color boschYellow = Color.FromArgb(255, 204, 0);
 
         // Adiciona o painel para os inputs acima da PictureBox
         float width = 250;
@@ -64,7 +66,7 @@ public partial class MainForm : Form
         RectangleF inputPanelRect = ClientScreen.OnScreen(ClientScreen.Width - width, ClientScreen.Height / 2 - height / 2, width, height);
         inputPanel = new Panel
         {
-            BackColor = Color.LightGray,
+            BackColor = boschBlue,
             Size = new Size((int)inputPanelRect.Width, (int)inputPanelRect.Height),
             Location = new Point((int)inputPanelRect.X, (int)inputPanelRect.Y)
         };
@@ -81,7 +83,8 @@ public partial class MainForm : Form
                 Text = shapes[i] + ":",
                 AutoSize = true,
                 Location = new Point(10, (int)(fontsize * 2 + (int)(fontsize * 2.5) * i)),
-                Font = font
+                Font = font,
+                ForeColor = Color.White
             };
             inputPanel.Controls.Add(label);
 
@@ -104,6 +107,8 @@ public partial class MainForm : Form
             Font = font,
             Size = buttonSize,
             Location = new Point(inputPanel.Width / 2 - buttonSize.Width / 2, (int)(inputPanel.Height - buttonSize.Height * 1.5)),
+            BackColor = boschYellow,
+            ForeColor = Color.Black
         };
         getInfoButton.Click += GetInfoButton_Click;
         inputPanel.Controls.Add(getInfoButton);

@@ -24,14 +24,17 @@ public class CloseForm : Form
         input1 = new TextBox();
         input1.Width = 250;
 
-        Label label2 = new Label { Text = "Senha:", AutoSize = true };
+        Label label2 = new Label { 
+            Text = "Senha:", 
+            AutoSize = true };
 
-        input2 = new TextBox();
+        input2 = new TextBox{ PasswordChar = '*' };
         input2.Width = 250;
+        input2.UseSystemPasswordChar = true;
 
         startButton = new Button
         {
-            Text = "Iniciar",
+            Text = "Fechar",
             Location = new Point(200, y: 150),
             Size = new Size(80, 30)
         };
