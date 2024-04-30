@@ -2,7 +2,7 @@
 
 cd .\FlaskServer\
 
-if not exist ".venv/" echo Instalando as bibliotecas necessarias & python -m venv .venv/ & call .\.venv\Scripts\activate & pip install flask & pip install xlsxwriter
+if not exist ".venv/" echo Instalando as bibliotecas necessarias... & python -m venv .venv/ & call .\.venv\Scripts\activate & pip install flask & pip install xlsxwriter
 
 start cmd.exe /c start "" http://127.0.0.1:5000/
 
