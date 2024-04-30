@@ -166,19 +166,17 @@ public class Tutorial : IGame
         if (apiResponse != Respostas.Comecado)
         {
             string info = "";
-            int valor = 200;
+            int index = 0;
+            int[] valores = {500, 300, 400, 600, 700};
             foreach (Control control in panel.Controls)
             {
-                if (valor == 500)
-                    valor += 100;
-
                 if (control is TextBox)
                 {
                     var text = ((TextBox)control).Text;
                     if (text is "")
                         text = "0";
-                    info += text + " - " + valor.ToString() + "\n";
-                    valor += 100;
+                    info += text + " - " + valores[index].ToString() + "\n";
+                    index++;
                 }
             }
             MessageBox.Show(info, "Informações dos Inputs");

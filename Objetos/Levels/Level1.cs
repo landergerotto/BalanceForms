@@ -188,6 +188,7 @@ public class Level1 : IGame
             var serialized = Json.SerializeToJson(this.result);
             await requester.PostAsync("test", serialized);
             count++;
+            MessageBox.Show("O instrutor finalizou o teste. Suas respostas foram enviadas automaticamente e você não pode mais enviá-las");
         }
     }
 
