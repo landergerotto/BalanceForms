@@ -28,6 +28,7 @@ public class CloseForm : Form
 
         input2 = new TextBox();
         input2.Width = 250;
+        input2.UseSystemPasswordChar = true;
 
         startButton = new Button
         {
