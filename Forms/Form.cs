@@ -83,7 +83,8 @@ public partial class MainForm : Form
                 Text = shapes[i] + ":",
                 AutoSize = true,
                 Location = new Point(10, (int)(fontsize * 2 + (int)(fontsize * 2.5) * i)),
-                Font = font
+                Font = font,
+                ForeColor = Color.White
             };
             inputPanel.Controls.Add(label);
 

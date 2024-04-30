@@ -127,7 +127,7 @@ public class Level1 : IGame
         g.DrawText(tituloN1, (ClientScreen.Width - g.MeasureString(tituloN1, fonte).Width) / 2, 20, fonte, brush1);
 
         fonte = new Font("Arial", 12);
-        string comentario = "1- Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso \ndas outras figuras colocando nas balanças.";
+        string comentario = "1- Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso \ndas outras figuras colocando nas balanças. Duas figuras tem o peso menor de 500 e duas maior de 500.";
         string msg = "Você está no nível 1. Tome cuidado para não usar peças demais.";
         string importante = "Importante: Quando a figura é colocada na balança, você não consegue removê-la.";
 
