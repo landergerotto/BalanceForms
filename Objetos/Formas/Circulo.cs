@@ -13,7 +13,7 @@ public class Circulo : Objeto
                 _image = new Bitmap(diameter, diameter);
                 using (Graphics g = Graphics.FromImage(_image))
                 {
-                    Brush brush = Brushes.Green;
+                    Brush brush = Brushes.Red;
 
                     g.FillEllipse(brush, 0, 0, diameter, diameter);
                 }
