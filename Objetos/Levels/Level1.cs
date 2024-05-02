@@ -23,7 +23,7 @@ public class Level1 : IGame
 
     public List<int> QuantidadeObjeto => QuantidadeObjeto;
     private int count = 0;
-    private List<int> Valores = new List<int> {1000, 750, 200, 100};
+    private List<int> Valores = new List<int> { 1000, 750, 200, 100 };
     public Dictionary<Type, List<Objeto>> MesaTypes
     {
         get
@@ -127,19 +127,42 @@ public class Level1 : IGame
         string tituloN1 = "Bem-vindo ao Nível 1";
         Font fonte = new Font("Arial", 20);
         Brush brush1 = Brushes.Black;
-        g.DrawText(tituloN1, (ClientScreen.Width - g.MeasureString(tituloN1, fonte).Width) / 2, 20, fonte, brush1);
+        g.DrawText(
+            tituloN1,
+            (ClientScreen.Width - g.MeasureString(tituloN1, fonte).Width) / 2,
+            20,
+            fonte,
+            brush1
+        );
 
         fonte = new Font("Arial", 12);
-        string comentario = "1- Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso \ndas outras figuras colocando nas balanças.";
+        string comentario =
+            "1- Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso \ndas outras figuras colocando nas balanças.";
         string msg = "Você está no nível 1. Tome cuidado para não usar peças demais.";
-        string importante = "Importante: Quando a figura é colocada na balança, você não consegue removê-la.";
+        string importante =
+            "Importante: Quando a figura é colocada na balança, você não consegue removê-la.";
 
-
-        g.DrawText(comentario, (ClientScreen.Width - g.MeasureString(comentario, fonte).Width) / 2, 100, fonte, brush1);
-        g.DrawText(msg, (ClientScreen.Width - g.MeasureString(msg, fonte).Width) / 2, 150, fonte, brush1);
-        g.DrawText(importante, (ClientScreen.Width - g.MeasureString(importante, fonte).Width) / 2, 200, fonte, brush1);
-
-
+        g.DrawText(
+            comentario,
+            (ClientScreen.Width - g.MeasureString(comentario, fonte).Width) / 2,
+            100,
+            fonte,
+            brush1
+        );
+        g.DrawText(
+            msg,
+            (ClientScreen.Width - g.MeasureString(msg, fonte).Width) / 2,
+            150,
+            fonte,
+            brush1
+        );
+        g.DrawText(
+            importante,
+            (ClientScreen.Width - g.MeasureString(importante, fonte).Width) / 2,
+            200,
+            fonte,
+            brush1
+        );
 
         foreach (var balanca in balancas)
             balanca.Draw(g);
@@ -162,16 +185,21 @@ public class Level1 : IGame
             RectangleF textRect = ClientScreen.OnScreen(
                 center.X - (fontsize / 2) * text.Length,
                 center.Y - (fontsize / 2) * text.Length,
-                fontsize * text.Length, fontsize
+                fontsize * text.Length,
+                fontsize
             );
 
             Font font = new Font("Arial", textRect.Height);
             SolidBrush brush = new SolidBrush(Color.Black);
 
             g.DrawString(
-                (type.Value.Count - (ClientCursor.Objeto?.GetType() == obj.GetType() ? 1 : 0)).ToString(),
-                font, brush,
-                new PointF(textRect.X, textRect.Y));
+                (
+                    type.Value.Count - (ClientCursor.Objeto?.GetType() == obj.GetType() ? 1 : 0)
+                ).ToString(),
+                font,
+                brush,
+                new PointF(textRect.X, textRect.Y)
+            );
         }
     }
 
@@ -191,7 +219,9 @@ public class Level1 : IGame
             var serialized = Json.SerializeToJson(this.result);
             await requester.PostAsync("test", serialized);
             count++;
-            MessageBox.Show("O instrutor finalizou o teste. Suas respostas foram enviadas automaticamente e você não pode mais enviá-las");
+            MessageBox.Show(
+                "O instrutor finalizou o teste. Suas respostas foram enviadas automaticamente e você não pode mais enviá-las"
+            );
         }
     }
 
@@ -201,17 +231,15 @@ public class Level1 : IGame
         {
             this.result = BuildJson(panel, nome, nasc);
 
-            ConfirmationForm confirmationForm = new ConfirmationForm("Tem certeza que você quer enviar? Isso o fará avançar de nível.");
+            ConfirmationForm confirmationForm = new ConfirmationForm(
+                "Tem certeza que você quer enviar? Isso o fará avançar de nível."
+            );
             DialogResult result = confirmationForm.ShowDialog();
             if (result == DialogResult.Yes)
                 GameEngine.Current.ChangeLevel(panel, this.result);
-
             else
             {
-                MessageBox.Show(
-                    "Você está no nível 1. Você não avançou.",
-                    "Informação"
-                );
+                MessageBox.Show("Você está no nível 1. Você não avançou.", "Informação");
                 return;
             }
         }
@@ -246,37 +274,53 @@ public class Level1 : IGame
         int estrela = 0;
         int hexagono = 0;
 
-        if (textboxes[0].Text == Valores[0].ToString() && textboxes[0].Text != "0")
+        for (int i = 0; i < textboxes.Length; i++)
         {
-            quadrado = 2;
-            acertos++;
+            if (textboxes[i].Text != "0")
+            {
+                if (textboxes[i].Text == Valores[i].ToString())
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            quadrado = 2;
+                            break;
+                        case 1:
+                            circulo = 2;
+                            break;
+                        case 2:
+                            estrela = 2;
+                            break;
+                        case 3:
+                            hexagono = 2;
+                            break;
+                        default:
+                            break;
+                    }
+                    acertos++;
+                }
+                else
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            quadrado = 1;
+                            break;
+                        case 1:
+                            circulo = 1;
+                            break;
+                        case 2:
+                            estrela = 1;
+                            break;
+                        case 3:
+                            hexagono = 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
-        else
-            quadrado = 1;
-
-        if (textboxes[1].Text == Valores[1].ToString() && textboxes[1].Text != "0")
-        {
-            circulo = 2;
-            acertos++;
-        }
-        else
-            circulo = 1;
-
-        if (textboxes[2].Text == Valores[2].ToString() && textboxes[1].Text != "0")
-        {
-            estrela = 2;
-            acertos++;
-        }
-        else
-            estrela = 1;
-
-        if (textboxes[3].Text == Valores[3].ToString() && textboxes[3].Text != "0")
-        {
-            hexagono = 2;
-            acertos++;
-        }
-        else
-            hexagono = 1;
 
         var json = new TestResult
         {
@@ -284,7 +328,7 @@ public class Level1 : IGame
             nascimento = nasc,
             prova1 = new Prova
             {
-                triangulo = 500,
+                triangulo = 2,
                 quadrado = quadrado,
                 circulo = circulo,
                 estrela = estrela,
