@@ -86,7 +86,7 @@ def createWorkbook():
     worksheets = [worksheet1, worksheet2]
     correct_answers = [[500, 1000, 750, 200, 100], [500, 675, 600, 50, 25]]
     for index, worksheet in enumerate(worksheets):
-        first_line = ['Nome', 'Data de nascimento', 'Triângulo', 'Quadrado', 'Círculo', 'Estrela', 'Hexágono', 'Tempo de prova', 'Quantidade de peças utilizadas', '% de acertos']
+        first_line = ['Nome', 'Data de nascimento', 'Triângulo', 'Quadrado', 'Círculo', 'Estrela', 'Hexágono', 'Tempo de prova', 'Quantidade de peças utilizadas', 'Tentativas', '% de acertos']
         for i in range(len(first_line)):
             if i > 1 and i < 7:
                 worksheet.set_column(i, i, len(first_line[i]))
@@ -161,7 +161,8 @@ def test_status():
             worksheet.write(answer_row, 1, user_data['nascimento'], user_format)
             worksheet.write(answer_row, 7, tests[index][5], user_format)
             worksheet.write(answer_row, 8, tests[index][6], user_format)
-            worksheet.write(answer_row, 9, tests[index][7], percentage_format)
+            worksheet.write(answer_row, 9, tests[index][7], user_format)
+            worksheet.write(answer_row, 10, tests[index][8], percentage_format)
             for i in range(2, 7):
                 worksheet.write(answer_row, i, tests[index][crr], answers_format_correct if tests[index][crr] == correct_answers[index][crr] else answers_format_wrong)
                 crr += 1

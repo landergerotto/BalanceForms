@@ -9,6 +9,7 @@
     "hexagono": 123,
     "tempo": 1500,
     "quantidade": 15,
+    "tentativas": 10,
     "acertos": 0.4
   },
   "prova2": {
@@ -19,6 +20,7 @@
     "hexagono": 100,
     "tempo": 2000,
     "quantidade": 10,
+    "tentativas": 10,
     "acertos": 0.8
   }
 }

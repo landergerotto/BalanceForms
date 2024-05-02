@@ -272,6 +272,7 @@ public class Level2 : IGame
             hexagono = int.Parse(textboxes[3].Text),
             tempo = (int)TestTimer.Stop().TotalSeconds,
             quantidade = Balancas.Sum(balanca => balanca.Count),
+            tentativas = Balancas.Sum(balanca => balanca.Testes),
             acertos = acertos / 4
         };
 
