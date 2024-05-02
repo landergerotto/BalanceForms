@@ -21,7 +21,7 @@ public class Level2 : IGame
     public Dictionary<Objeto, int> Formas = new();
 
     public List<int> QuantidadeObjeto => QuantidadeObjeto;
-    private List<int> Valores = new List<int> {675, 600, 50, 25};
+    private List<int> Valores = new List<int> { 675, 600, 50, 25 };
     private int count = 0;
 
     private int Testes = 0;
@@ -58,6 +58,8 @@ public class Level2 : IGame
 
         balancas[0] = b1;
         balancas[1] = b2;
+
+        Utils.Shuffle(this.Valores);
 
         Formas[new Circulo(new PointF(0, 0), Valores[1])] = 5;
         Formas[new Quadrado(new PointF(125, 0), Valores[0])] = 5;
@@ -134,17 +136,43 @@ public class Level2 : IGame
         string tituloN2 = "Bem-vindo ao Nível 2";
         Font fonte = new Font("Arial", 20);
         Brush brush1 = Brushes.Black;
-        g.DrawText(tituloN2, (ClientScreen.Width - g.MeasureString(tituloN2, fonte).Width) / 2, 20, fonte, brush1);
+        g.DrawText(
+            tituloN2,
+            (ClientScreen.Width - g.MeasureString(tituloN2, fonte).Width) / 2,
+            20,
+            fonte,
+            brush1
+        );
 
         fonte = new Font("Arial", 12);
 
-        string comentario = "2- Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso \ndas outras figuras colocando nas balanças. Duas figuras tem o peso menor de 500 e duas maior de 500.";
+        string comentario =
+            "2- Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso \ndas outras figuras colocando nas balanças. Duas figuras tem o peso menor de 500 e duas maior de 500.";
         string msg = "Você está no nível 2. Tome cuidado para não usar peças demais.";
-        string importante = "Importante: Quando a figura é colocada na balança, você não consegue removê-la.";
+        string importante =
+            "Importante: Quando a figura é colocada na balança, você não consegue removê-la.";
 
-        g.DrawText(comentario, (ClientScreen.Width - g.MeasureString(comentario, fonte).Width) / 2, 100, fonte, brush1);
-        g.DrawText(msg, (ClientScreen.Width - g.MeasureString(msg, fonte).Width) / 2, 150, fonte, brush1);
-        g.DrawText(importante, (ClientScreen.Width - g.MeasureString(importante, fonte).Width) / 2, 200, fonte, brush1);
+        g.DrawText(
+            comentario,
+            (ClientScreen.Width - g.MeasureString(comentario, fonte).Width) / 2,
+            100,
+            fonte,
+            brush1
+        );
+        g.DrawText(
+            msg,
+            (ClientScreen.Width - g.MeasureString(msg, fonte).Width) / 2,
+            150,
+            fonte,
+            brush1
+        );
+        g.DrawText(
+            importante,
+            (ClientScreen.Width - g.MeasureString(importante, fonte).Width) / 2,
+            200,
+            fonte,
+            brush1
+        );
 
         foreach (var balanca in balancas)
             balanca.Draw(g);
@@ -167,7 +195,8 @@ public class Level2 : IGame
             RectangleF textRect = ClientScreen.OnScreen(
                 center.X - (fontsize / 2) * text.Length,
                 center.Y - (fontsize / 2) * text.Length,
-                fontsize * text.Length, fontsize
+                fontsize * text.Length,
+                fontsize
             );
 
             Font font = new Font("Arial", textRect.Height);
@@ -246,10 +275,7 @@ public class Level2 : IGame
             }
             else
             {
-                MessageBox.Show(
-                    "Você está no nível 2.",
-                    "Informação"
-                );
+                MessageBox.Show("Você está no nível 2.", "Informação");
                 return;
             }
         }
@@ -284,46 +310,61 @@ public class Level2 : IGame
         int estrela = 0;
         int hexagono = 0;
 
-        if (textboxes[0].Text == Valores[0].ToString() && textboxes[0].Text != "0")
+        for (int i = 0; i < textboxes.Length; i++)
         {
-            quadrado = 2;
-            acertos++;
+            if (textboxes[i].Text != "0")
+            {
+                if (textboxes[i].Text == Valores[i].ToString())
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            quadrado = 2;
+                            break;
+                        case 1:
+                            circulo = 2;
+                            break;
+                        case 2:
+                            estrela = 2;
+                            break;
+                        case 3:
+                            hexagono = 2;
+                            break;
+                        default:
+                            break;
+                    }
+                    acertos++;
+                }
+                else
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            quadrado = 1;
+                            break;
+                        case 1:
+                            circulo = 1;
+                            break;
+                        case 2:
+                            estrela = 1;
+                            break;
+                        case 3:
+                            hexagono = 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
-        else
-            quadrado = 1;
-
-        if (textboxes[1].Text == Valores[1].ToString() && textboxes[1].Text != "0")
-        {
-            circulo = 2;
-            acertos++;
-        }
-        else
-            circulo = 1;
-
-        if (textboxes[2].Text == Valores[2].ToString() && textboxes[1].Text != "0")
-        {
-            estrela = 2;
-            acertos++;
-        }
-        else
-            estrela = 1;
-
-        if (textboxes[3].Text == Valores[3].ToString() && textboxes[3].Text != "0")
-        {
-            hexagono = 2;
-            acertos++;
-        }
-        else
-            hexagono = 1;
-
 
         this.result.prova2 = new Prova
         {
-            triangulo = 500,
-            quadrado = int.Parse(textboxes[0].Text),
-            circulo = int.Parse(textboxes[1].Text),
-            estrela = int.Parse(textboxes[2].Text),
-            hexagono = int.Parse(textboxes[3].Text),
+            triangulo = 2,
+            quadrado = quadrado,
+            circulo = circulo,
+            estrela = estrela,
+            hexagono = hexagono,
             tempo = (int)TestTimer.Stop().TotalSeconds,
             quantidade = Balancas.Sum(balanca => balanca.Count),
             tentativas = this.Testes,
