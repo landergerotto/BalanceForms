@@ -4,12 +4,14 @@ using System.Windows.Forms;
 public static class ClientCursor
 {
     public static Objeto Objeto { get; set; } = null;
+    public static Balanca Testar { get; set; } = null;
 
     public static PointF position;
-    public static PointF Position 
+    public static PointF Position
     {
-        get => position; 
-        set {
+        get => position;
+        set
+        {
             if (Objeto is not null)
                 Objeto.Move(new PointF(value.X - Objeto.Width / 2, value.Y - Objeto.Height / 2));
             position = value;
@@ -18,6 +20,12 @@ public static class ClientCursor
 
     public static void Clicar()
     {
+        foreach (var balanca in GameEngine.Current.JogoAtual.Balancas)
+        {
+            if (balanca.BotaoTeste.Contains(Position))
+                Testar = balanca;
+        }
+
         foreach (var obj in GameEngine.Current.JogoAtual.Mesa)
         {
             if (obj.Hitbox.Contains(Position))
@@ -27,9 +35,15 @@ public static class ClientCursor
 
     public static void Soltar()
     {
-        if (Objeto is null)
+        if (Objeto is null && Testar is null)
             return;
         foreach (var balanca in GameEngine.Current.JogoAtual.Balancas)
+        {
+            if (balanca.BotaoTeste.Contains(Position))
+            {
+                Testar = null;
+                balanca.Testar();
+            }
             foreach (var prato in balanca.Pratos)
             {
                 if (prato.Hitbox.Contains(Position))
@@ -39,6 +53,7 @@ public static class ClientCursor
                     prato.Objetos.Add(Objeto);
                 }
             }
+        }
         Objeto = null;
     }
 }
