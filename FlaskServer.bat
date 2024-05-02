@@ -9,4 +9,4 @@ start cmd.exe /c start "" http://127.0.0.1:5000/
 cls
 echo Manter o console aberto para que o servidor funcione apropriadamente.
 call .\.venv\Scripts\activate
-flask --app App run
+flask --app App run --debug

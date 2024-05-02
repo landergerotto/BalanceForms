@@ -48,6 +48,7 @@ public class Tutorial : IGame
 
     private HttpRequester requester = new("http://127.0.0.1:5000/");
     private Respostas apiResponse;
+    private bool levelChange = false;
     public Tutorial()
     {
         var b1 = new Balanca(0, 450);
@@ -98,7 +99,7 @@ public class Tutorial : IGame
     }
     public async void Update(Panel panel, string nome, string nasc)
     {
-        await TestRequestAsync();
+        await TestRequestAsync(panel, nome, nasc);
         foreach (var balanca in balancas)
             balanca.Update();
 
@@ -177,11 +178,26 @@ public class Tutorial : IGame
 
         g.DrawText(textp, textPosition, fontp, brushp);
     }
-    private async Task TestRequestAsync()
+    private async Task TestRequestAsync(Panel panel, string nome, string nasc)
     {
         string a = await requester.GetAsync("test");
         var b = Json.DeserializeResponse(a);
         this.apiResponse = b.response;
+
+        if (apiResponse == Respostas.Comecado)
+        {
+            if (levelChange)
+                return;
+
+            levelChange = true;
+            
+            GameEngine.Current.ChangeLevel(panel, this.result);
+
+            MessageBox.Show(
+                "O Teste começou. Você está no nível 1.",
+                "Informação"
+            );
+        }
     }
 
     public void Enviar(Panel panel, string nome, string nasc, Form form)
