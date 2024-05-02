@@ -4,7 +4,7 @@ using System.Windows.Forms;
 public static class ClientCursor
 {
     public static Objeto Objeto { get; set; } = null;
-    public static Balanca Testar { get; set; } = null;
+    public static bool Testar { get; set; } = false;
 
     public static PointF position;
     public static PointF Position
@@ -20,11 +20,8 @@ public static class ClientCursor
 
     public static void Clicar()
     {
-        foreach (var balanca in GameEngine.Current.JogoAtual.Balancas)
-        {
-            if (balanca.BotaoTeste.Contains(Position))
-                Testar = balanca;
-        }
+        if (GameEngine.Current.JogoAtual.BotaoTeste.Contains(Position))
+            Testar = true;
 
         foreach (var obj in GameEngine.Current.JogoAtual.Mesa)
         {
@@ -35,14 +32,14 @@ public static class ClientCursor
 
     public static void Soltar()
     {
-        if (Objeto is null && Testar is null)
+        if (Objeto is null && Testar is false)
             return;
         foreach (var balanca in GameEngine.Current.JogoAtual.Balancas)
         {
-            if (balanca.BotaoTeste.Contains(Position))
-            {
-                Testar = null;
-                balanca.Testar();
+            if (GameEngine.Current.JogoAtual.BotaoTeste.Contains(Position))
+            { 
+                Testar = false;
+                GameEngine.Current.JogoAtual.Testar();
             }
             foreach (var prato in balanca.Pratos)
             {

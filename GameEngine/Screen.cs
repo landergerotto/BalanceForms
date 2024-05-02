@@ -34,6 +34,9 @@ public static class ClientScreen
     public static void DrawRectangleOnScreen(this Graphics g, Pen Pen, RectangleF rect)
         => g.DrawRectangle(Pen, OnScreen(rect.X, rect.Y, rect.Width, rect.Height));
 
+    public static void DrawRectangleOnScreen(this Graphics g, Brush brush, RectangleF rect)
+        => g.FillRectangle(brush, OnScreen(rect.X, rect.Y, rect.Width, rect.Height));
+
     public static PointF PositionOnScreen(float x, float y)
     {
         float scaleX = Size.Width / Screen.PrimaryScreen.Bounds.Width;

@@ -22,6 +22,9 @@ public class Tutorial : IGame
 
     public List<int> QuantidadeObjeto => QuantidadeObjeto;
 
+    private RectangleF botaoTeste;
+    public RectangleF BotaoTeste { get => botaoTeste; set => botaoTeste = value; }
+
 
     public Dictionary<Type, List<Objeto>> MesaTypes
     {
@@ -88,6 +91,10 @@ public class Tutorial : IGame
             new PointF(mesa_pos.X - rectBorder, mesa_pos.Y - rectBorder),
             new SizeF(mesa_size.Width + rectBorder * 2, mesa_size.Height + rectBorder * 2)
         );
+        
+        var x = ClientScreen.Center.X;
+        var width = 300;
+        this.BotaoTeste = new RectangleF(x - width / 2, 750, width, 100);
     }
     public async void Update(Panel panel, string nome, string nasc)
     {
@@ -153,6 +160,22 @@ public class Tutorial : IGame
                 font, brush,
                 new PointF(textRect.X, textRect.Y));
         }
+
+        Brush boschBlue = new SolidBrush(Color.FromArgb(0, 82, 155));
+        g.DrawRectangleOnScreen(boschBlue, BotaoTeste);
+
+        string textp = "Pesar";
+        Font fontp = new Font("Arial", 18);
+        Brush brushp = Brushes.White;
+
+        float centerX = BotaoTeste.X + BotaoTeste.Width / 2;
+        float centerY = BotaoTeste.Y + BotaoTeste.Height / 2;
+
+
+        SizeF textSize = g.MeasureString(textp, fontp);
+        PointF textPosition = new PointF(centerX - textSize.Width / 2, centerY - textSize.Height / 2);
+
+        g.DrawText(textp, textPosition, fontp, brushp);
     }
     private async Task TestRequestAsync()
     {
@@ -186,6 +209,14 @@ public class Tutorial : IGame
         {
             MessageBox.Show("O desafio de verdade começa agora.", "Aviso");
             GameEngine.Current.ChangeLevel(panel, result);
+        }
+    }
+
+    public void Testar()
+    {
+        foreach (var balanca in balancas)
+        {
+            balanca.Testar();
         }
     }
 }

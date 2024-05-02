@@ -22,6 +22,11 @@ public class Level2 : IGame
 
     public List<int> QuantidadeObjeto => QuantidadeObjeto;
     private int count = 0;
+
+    private int Testes = 0;
+    private RectangleF botaoTeste;
+    public RectangleF BotaoTeste { get => botaoTeste; set => botaoTeste = value; }
+
     public Dictionary<Type, List<Objeto>> MesaTypes
     {
         get
@@ -93,6 +98,10 @@ public class Level2 : IGame
             new PointF(mesa_pos.X - rectBorder, mesa_pos.Y - rectBorder),
             new SizeF(mesa_size.Width + rectBorder * 2, mesa_size.Height + rectBorder * 2)
         );
+
+        var x = ClientScreen.Center.X;
+        var width = 300;
+        this.BotaoTeste = new RectangleF(x - width / 2, 750, width, 100);
     }
 
     public async void Update(Panel panel, string nome, string nasc)
@@ -172,6 +181,21 @@ public class Level2 : IGame
                 center.Y - font.Size / 2
             );
         }
+
+       Brush boschBlue = new SolidBrush(Color.FromArgb(0, 82, 155));
+        g.DrawRectangleOnScreen(boschBlue, BotaoTeste);
+
+        string textp = "Pesar";
+        Font fontp = new Font("Arial", 18);
+        Brush brushp = Brushes.White;
+
+        float centerX = BotaoTeste.X + BotaoTeste.Width / 2;
+        float centerY = BotaoTeste.Y + BotaoTeste.Height / 2;
+
+        SizeF textSize = g.MeasureString(textp, fontp);
+        PointF textPosition = new PointF(centerX - textSize.Width / 2, centerY - textSize.Height / 2);
+
+        g.DrawText(textp, textPosition, fontp, brushp);
     }
 
     private async Task TestRequestAsync(Panel panel, string nome, string nasc)
@@ -272,10 +296,26 @@ public class Level2 : IGame
             hexagono = int.Parse(textboxes[3].Text),
             tempo = (int)TestTimer.Stop().TotalSeconds,
             quantidade = Balancas.Sum(balanca => balanca.Count),
-            tentativas = Balancas.Sum(balanca => balanca.Testes),
+            tentativas = this.Testes,
             acertos = acertos / 4
         };
 
         return this.result;
     }
+
+    public int lascount = 0;
+    public void Testar()
+    {
+        foreach (var balanca in balancas)
+        {
+            balanca.Testar();
+        }
+        int count = balancas.Sum(balanca => balanca.Count);
+        if (lascount != count)
+            this.Testes++;
+        lascount = count;
+        
+    }
 }
+// 25 10
+// 9 8

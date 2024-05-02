@@ -9,7 +9,9 @@ public interface IGame
     Balanca[] Balancas { get; }
     List<Objeto> Mesa { get; }
     TestResult result { get; set;}
+    RectangleF BotaoTeste { get; set; }
     void Update(Panel panel, string nome, string nasc);
     void Draw(Graphics g);
     void Enviar(Panel panel, string nome, string nasc, Form form);
+    void Testar();
 }

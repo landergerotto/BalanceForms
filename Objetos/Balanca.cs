@@ -11,8 +11,6 @@ public class Balanca
     public PointF Position { get; set; }
     public SizeF Tamanho { get; set; } = new SizeF(800, 450);
     public Equilibrio Equilibrio { get; set; } = (Equilibrio)2;
-    public int Testes { get; private set; } = 0;
-    public RectangleF BotaoTeste { get; set; }
 
     public float X => Position.X;
     public float Y => Position.Y;
@@ -37,7 +35,6 @@ public class Balanca
         this.Image = Bitmap.FromFile("assets/Balanca/balanca2.png");
 
         var dim = Utils.ProportionalSize(Image, new SizeF(width, height));
-        this.BotaoTeste = new RectangleF(X + dim.Width * .25f, Y + dim.Height, dim.Width / 2, dim.Height * .25f);
     }
 
     public void Update()
@@ -50,19 +47,6 @@ public class Balanca
         g.DrawImageOnScreen(Image, Position, Tamanho);
         Esquerdo.Draw(g);
         Direito.Draw(g);
-        g.DrawRectangleOnScreen(Pens.Red, BotaoTeste);
-
-        string text = "Pesar";
-        Font font = new Font("Arial", 12);
-        Brush brush = Brushes.Black;
-
-        float centerX = BotaoTeste.X + BotaoTeste.Width / 2;
-        float centerY = BotaoTeste.Y + BotaoTeste.Height / 2;
-
-        SizeF textSize = g.MeasureString(text, font);
-        PointF textPosition = new PointF(centerX - textSize.Width / 2, centerY - textSize.Height / 2);
-
-        g.DrawText(text, textPosition, font, brush);
     }
 
     public void Testar()
@@ -71,6 +55,5 @@ public class Balanca
         int sum2 = Direito.Peso;
 
         Equilibrio = (Equilibrio)(sum1.CompareTo(sum2) + 2);
-        this.Testes++;
     }
 }
