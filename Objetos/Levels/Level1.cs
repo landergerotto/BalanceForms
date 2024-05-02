@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.VisualBasic.ApplicationServices;
 
 public class Level1 : IGame
 {
@@ -22,7 +23,7 @@ public class Level1 : IGame
 
     public List<int> QuantidadeObjeto => QuantidadeObjeto;
     private int count = 0;
-
+    private List<int> Valores = new List<int> {1000, 750, 200, 100};
     public Dictionary<Type, List<Objeto>> MesaTypes
     {
         get
@@ -53,11 +54,13 @@ public class Level1 : IGame
         balancas[0] = b1;
         balancas[1] = b2;
 
-        Formas[new Circulo(new PointF(0, 0), 750)] = 5;
-        Formas[new Quadrado(new PointF(125, 0), 1000)] = 5;
+        Utils.Shuffle(this.Valores);
+
+        Formas[new Circulo(new PointF(0, 0), Valores[1])] = 5;
+        Formas[new Quadrado(new PointF(125, 0), Valores[0])] = 5;
         Formas[new Triangulo(new PointF(250, 0), 500)] = 5;
-        Formas[new Estrela(new PointF(375, 0), 200)] = 5;
-        Formas[new Hexagono(new PointF(500, 0), 100)] = 5;
+        Formas[new Estrela(new PointF(375, 0), Valores[2])] = 5;
+        Formas[new Hexagono(new PointF(500, 0), Valores[3])] = 5;
 
         float x0 = ClientScreen.Width;
         float x1 = 0;
@@ -127,7 +130,7 @@ public class Level1 : IGame
         g.DrawText(tituloN1, (ClientScreen.Width - g.MeasureString(tituloN1, fonte).Width) / 2, 20, fonte, brush1);
 
         fonte = new Font("Arial", 12);
-        string comentario = "1- Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso \ndas outras figuras colocando nas balanças. Duas figuras tem o peso menor de 500 e duas maior de 500.";
+        string comentario = "1- Aqui você tem 5 figuras geométricas, cada figura tem um peso, sabendo que o triângulo tem o peso de 500, descubra o peso \ndas outras figuras colocando nas balanças.";
         string msg = "Você está no nível 1. Tome cuidado para não usar peças demais.";
         string importante = "Importante: Quando a figura é colocada na balança, você não consegue removê-la.";
 
@@ -238,14 +241,42 @@ public class Level1 : IGame
 
         float acertos = 0;
 
-        if (textboxes[0].Text == "1000")
+        int quadrado = 0;
+        int circulo = 0;
+        int estrela = 0;
+        int hexagono = 0;
+
+        if (textboxes[0].Text == Valores[0].ToString() && textboxes[0].Text != "0")
+        {
+            quadrado = 2;
             acertos++;
-        if (textboxes[1].Text == "750")
+        }
+        else
+            quadrado = 1;
+
+        if (textboxes[1].Text == Valores[1].ToString() && textboxes[1].Text != "0")
+        {
+            circulo = 2;
             acertos++;
-        if (textboxes[2].Text == "200")
+        }
+        else
+            circulo = 1;
+
+        if (textboxes[2].Text == Valores[2].ToString() && textboxes[1].Text != "0")
+        {
+            estrela = 2;
             acertos++;
-        if (textboxes[3].Text == "100")
+        }
+        else
+            estrela = 1;
+
+        if (textboxes[3].Text == Valores[3].ToString() && textboxes[3].Text != "0")
+        {
+            hexagono = 2;
             acertos++;
+        }
+        else
+            hexagono = 1;
 
         var json = new TestResult
         {
@@ -254,10 +285,10 @@ public class Level1 : IGame
             prova1 = new Prova
             {
                 triangulo = 500,
-                quadrado = int.Parse(textboxes[0].Text),
-                circulo = int.Parse(textboxes[1].Text),
-                estrela = int.Parse(textboxes[2].Text),
-                hexagono = int.Parse(textboxes[3].Text),
+                quadrado = quadrado,
+                circulo = circulo,
+                estrela = estrela,
+                hexagono = hexagono,
                 tempo = (int)TestTimer.Stop().TotalSeconds,
                 quantidade = Balancas.Sum(balanca => balanca.Count),
                 tentativas = Balancas.Sum(balanca => balanca.Testes),

@@ -21,6 +21,7 @@ public class Level2 : IGame
     public Dictionary<Objeto, int> Formas = new();
 
     public List<int> QuantidadeObjeto => QuantidadeObjeto;
+    private List<int> Valores = new List<int> {675, 600, 50, 25};
     private int count = 0;
     public Dictionary<Type, List<Objeto>> MesaTypes
     {
@@ -53,11 +54,11 @@ public class Level2 : IGame
         balancas[0] = b1;
         balancas[1] = b2;
 
-        Formas[new Circulo(new PointF(0, 0), 600)] = 5;
-        Formas[new Quadrado(new PointF(125, 0), 675)] = 5;
+        Formas[new Circulo(new PointF(0, 0), Valores[1])] = 5;
+        Formas[new Quadrado(new PointF(125, 0), Valores[0])] = 5;
         Formas[new Triangulo(new PointF(250, 0), 500)] = 5;
-        Formas[new Estrela(new PointF(375, 0), 50)] = 5;
-        Formas[new Hexagono(new PointF(500, 0), 25)] = 5;
+        Formas[new Estrela(new PointF(375, 0), Valores[2])] = 5;
+        Formas[new Hexagono(new PointF(500, 0), Valores[3])] = 5;
 
         float x0 = ClientScreen.Width;
         float x1 = 0;
@@ -254,14 +255,43 @@ public class Level2 : IGame
 
         float acertos = 0;
 
-        if (textboxes[0].Text == "675")
+        int quadrado = 0;
+        int circulo = 0;
+        int estrela = 0;
+        int hexagono = 0;
+
+        if (textboxes[0].Text == Valores[0].ToString() && textboxes[0].Text != "0")
+        {
+            quadrado = 2;
             acertos++;
-        if (textboxes[1].Text == "600")
+        }
+        else
+            quadrado = 1;
+
+        if (textboxes[1].Text == Valores[1].ToString() && textboxes[1].Text != "0")
+        {
+            circulo = 2;
             acertos++;
-        if (textboxes[2].Text == "50")
+        }
+        else
+            circulo = 1;
+
+        if (textboxes[2].Text == Valores[2].ToString() && textboxes[1].Text != "0")
+        {
+            estrela = 2;
             acertos++;
-        if (textboxes[3].Text == "25")
+        }
+        else
+            estrela = 1;
+
+        if (textboxes[3].Text == Valores[3].ToString() && textboxes[3].Text != "0")
+        {
+            hexagono = 2;
             acertos++;
+        }
+        else
+            hexagono = 1;
+
 
         this.result.prova2 = new Prova
         {
