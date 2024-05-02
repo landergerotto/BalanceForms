@@ -9,7 +9,6 @@ bp = Blueprint('balance', __name__, url_prefix='/', static_folder='static')
 
 test_started = 0
 answer_row = 2
-crr = 0
 
 workbook = None
 worksheet1 = None
@@ -19,7 +18,6 @@ percentage_format = None
 answers_format_correct = None
 answers_format_wrong = None
 worksheets = None
-correct_answers = None
 
 def createWorkbook():
     global answer_row
@@ -31,8 +29,6 @@ def createWorkbook():
     global answers_format_correct
     global answers_format_wrong
     global worksheets
-    global correct_answers
-    global crr
     
     answer_row = 2
 
@@ -84,22 +80,14 @@ def createWorkbook():
     })
 
     worksheets = [worksheet1, worksheet2]
-    correct_answers = [[500, 1000, 750, 200, 100], [500, 675, 600, 50, 25]]
     for index, worksheet in enumerate(worksheets):
         first_line = ['Nome', 'Data de nascimento', 'Triângulo', 'Quadrado', 'Círculo', 'Estrela', 'Hexágono', 'Tempo de prova', 'Quantidade de peças utilizadas', 'Tentativas', '% de acertos']
         for i in range(len(first_line)):
-            if i > 1 and i < 7:
-                worksheet.set_column(i, i, len(first_line[i]))
-                worksheet.write(0, i, first_line[i], head_format)
-                worksheet.write(1, i, correct_answers[index][crr], head_format)
-                crr += 1
-                continue
             if first_line[i] != 'Nome':
-                worksheet.set_column(i, i, len(first_line[i]))
+                worksheet.set_column(i, i, len(first_line[i]) + 2)
             else:
                 worksheet.set_column(i, i, 30)
             worksheet.merge_range(0, i, 1, i, first_line[i], head_format)
-        crr = 0
 
 def time_formatter(time):
     hours = int(time) // 3600
@@ -107,6 +95,12 @@ def time_formatter(time):
     seconds = int(time) % 60
     time = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
     return time
+
+def verify_answer(answer):
+    return '✔' if answer == 2 else '✖' if answer == 1 else '➖'
+
+def define_formatting(answer):
+    return answers_format_correct if answer == 2 else answers_format_wrong if answer == 1 else user_format
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
@@ -156,6 +150,7 @@ def test_status():
         tests[0][5] = time_formatter(tests[0][5])
         tests[1][5] = time_formatter(tests[1][5])
 
+        crr = 0
         for index, worksheet in enumerate(worksheets):
             worksheet.write(answer_row, 0, user_data['nome'], user_format)
             worksheet.write(answer_row, 1, user_data['nascimento'], user_format)
@@ -164,7 +159,7 @@ def test_status():
             worksheet.write(answer_row, 9, tests[index][7], user_format)
             worksheet.write(answer_row, 10, tests[index][8], percentage_format)
             for i in range(2, 7):
-                worksheet.write(answer_row, i, tests[index][crr], answers_format_correct if tests[index][crr] == correct_answers[index][crr] else answers_format_wrong)
+                worksheet.write(answer_row, i, verify_answer(tests[index][crr]), define_formatting(tests[index][crr]))
                 crr += 1
             crr = 0
         answer_row += 1
